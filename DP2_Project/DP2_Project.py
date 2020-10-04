@@ -187,7 +187,8 @@ def Create_Sales_Record_List(masterFrame , locked = 0):
 def Add_Stock_Callback():
 	global acceptState
 	acceptState = 1
-	global overlayElementsMasterFrame 
+	global overlayElementsHeaderFrame 
+	global overlayElementsContentFrame
 	Clear_Overlay()
 
 	Unlock_Accept_Button()
@@ -201,18 +202,36 @@ def Add_Stock_Callback():
 		borderwidth = 5,
 		relief = "ridge"
 		)
+	
+	overlayHeaderFrame = Frame(
+		stockOverlayFrame,
+		width = 480
+		)
+	#Not Currently Used
+	#overlayHeaderFrame.pack(fill = X)
+
+	overlayContentFrame = Frame(
+		stockOverlayFrame,
+		width = 480
+		)
+	overlayContentFrame.pack(fill = X)
+
 	stockOverlayFrame.pack_propagate(False)
-	Generate_Text_Entry(stockOverlayFrame, "Date", CENTER, 5, (5, 5), 10)
-	Create_Empty_Frame(stockOverlayFrame, 100)
-	Generate_Text_Entry(stockOverlayFrame, "Stock Name", W, 5, (0, 5), 20)
-	Create_Empty_Frame(stockOverlayFrame, 20)
-	Generate_Text_Entry(stockOverlayFrame, "Stock Price", W, 5, (0, 5), 20)
-	overlayElementsMasterFrame = stockOverlayFrame
+	#Generate_Text_Entry(stockOverlayFrame, "Date", CENTER, 5, (5, 5), 10)
+	Create_Empty_Frame(overlayContentFrame, 100)
+	Generate_Text_Entry(overlayContentFrame, "Stock Name", W, 5, (0, 5), 20)
+	Create_Empty_Frame(overlayContentFrame, 20)
+	Generate_Text_Entry(overlayContentFrame, "Stock Price", W, 5, (0, 5), 20)
+	
+	overlayElementsHeaderFrame = overlayHeaderFrame
+	overlayElementsContentFrame = overlayContentFrame
+
 	stockOverlayFrame.pack()
 	
 
 def Add_Sales_Record_Callback():
-	global overlayElementsMasterFrame
+	global overlayElementsHeaderFrame 
+	global overlayElementsContentFrame
 	global acceptState
 	acceptState = 2
 	Clear_Overlay()
@@ -230,9 +249,22 @@ def Add_Sales_Record_Callback():
 		relief = "ridge"
 		)
 	stockOverlayFrame.pack_propagate(False)
-	Generate_Text_Entry(stockOverlayFrame, "Date", CENTER, 5, (5, 5), 10)
 
-	Create_Empty_Frame(stockOverlayFrame, 50)
+	overlayHeaderFrame = Frame(
+		stockOverlayFrame,
+		width = 480
+		)
+	overlayHeaderFrame.pack(fill = X)
+
+	overlayContentFrame = Frame(
+		stockOverlayFrame,
+		width = 480
+		)
+	overlayContentFrame.pack(fill = X)
+
+	Generate_Text_Entry(overlayHeaderFrame, "Date", CENTER, 5, (5, 5), 10)
+
+	Create_Empty_Frame(overlayHeaderFrame, 50)
 
 	#Move to a function later
 	zeroWidth = textHeaderFont.measure("0")
@@ -240,37 +272,28 @@ def Add_Sales_Record_Callback():
 	#Header Frame
 	labelWidth = (480/4)/zeroWidth
 	#print(labelWidth)
-
-	headerFrame = Frame(
-		stockOverlayFrame,
-		width = 480,
-		height = 10,
-		borderwidth = 2,
-		relief = "ridge"
-		)
-	headerFrame.pack(fill = X)
 	
 	#Labels
 	stockNameLabel = Label(
-		headerFrame,
+		overlayHeaderFrame,
 		text = "Stock Name",
 		width = 13,
 		font = textHeaderFont
 		)
 	stockPriceLabel = Label(
-		headerFrame,
+		overlayHeaderFrame,
 		text = "Price",
 		width = 13,
 		font = textHeaderFont
 		)
 	stockQuanityLabel = Label(
-		headerFrame,
+		overlayHeaderFrame,
 		text = "Quanity",
 		width = 13,
 		font = textHeaderFont
 		)
 	totalPriceLabel = Label(
-		headerFrame,
+		overlayHeaderFrame,
 		text = "Total",
 		width = 13,
 		font = textHeaderFont
@@ -284,19 +307,17 @@ def Add_Sales_Record_Callback():
 	stockQuanityLabel.pack(side = LEFT, anchor = CENTER)
 	totalPriceLabel.pack(side = LEFT, anchor = CENTER)
 
-	overlayContentFrame = Frame(
-		stockOverlayFrame,
-		width = 480
-		)
-	overlayContentFrame.pack(fill = X)
-	overlayElementsMasterFrame = overlayContentFrame
+	overlayElementsHeaderFrame = overlayHeaderFrame
+	overlayElementsContentFrame = overlayContentFrame
+
 	#Call to the function that selects and genegates the text entry boxes
 	Create_Sales_Record_List(overlayContentFrame)
 
 	stockOverlayFrame.pack()
 
 def Edit_Sales_Record_Callback():
-	global overlayElementsMasterFrame
+	global overlayElementsHeaderFrame 
+	global overlayElementsContentFrame
 	global acceptState
 	acceptState = 3
 
@@ -315,12 +336,28 @@ def Edit_Sales_Record_Callback():
 		relief = "ridge"
 		)
 	stockOverlayFrame.pack_propagate(False)
-	Generate_Text_Entry(stockOverlayFrame, "Date", CENTER, 5, (5, 5), 10)
+
+	overlayHeaderFrame = Frame(
+		stockOverlayFrame,
+		width = 480
+		)
+	overlayHeaderFrame.pack(fill = X)
+
+	overlayContentFrame = Frame(
+		stockOverlayFrame,
+		width = 480
+		)
+	overlayContentFrame.pack(fill = X)
+
+	overlayElementsHeaderFrame = overlayHeaderFrame
+	overlayElementsContentFrame = overlayContentFrame
+
 	stockOverlayFrame.pack()
 
 def Display_Sales_Record_Callback():
 	
-	global overlayElementsMasterFrame
+	global overlayElementsHeaderFrame 
+	global overlayElementsContentFrame
 	global acceptState
 	acceptState = 4
 
@@ -341,11 +378,22 @@ def Display_Sales_Record_Callback():
 		)
 	stockOverlayFrame.pack_propagate(False)
 
-	overlayElementsMasterFrame = stockOverlayFrame
-	Generate_Text_Entry(stockOverlayFrame, "Date", CENTER, 5, (5, 5), 10)
+	overlayHeaderFrame = Frame(
+		stockOverlayFrame,
+		width = 480
+		)
+	overlayHeaderFrame.pack(fill = X)
+
+	overlayContentFrame = Frame(
+		stockOverlayFrame,
+		width = 480
+		)
+	overlayContentFrame.pack(fill = X)
+
+	Generate_Text_Entry(overlayHeaderFrame, "Date", CENTER, 5, (5, 5), 10)
 
 
-	Create_Empty_Frame(stockOverlayFrame, 50)
+	Create_Empty_Frame(overlayHeaderFrame, 50)
 	
 	#Move to a function later
 	zeroWidth = textHeaderFont.measure("0")\
@@ -353,36 +401,28 @@ def Display_Sales_Record_Callback():
 	#Header Frame
 	labelWidth = (480/4)/zeroWidth
 	#print(labelWidth)
-	headerFrame = Frame(
-		stockOverlayFrame,
-		width = 480,
-		height = 10,
-		borderwidth = 2,
-		relief = "ridge"
-		)
-	headerFrame.pack(fill = X)
 
 	#Labels
 	stockNameLabel = Label(
-		headerFrame,
+		overlayHeaderFrame,
 		text = "Stock Name",
 		width = 13,
 		font = textHeaderFont
 		)
 	stockPriceLabel = Label(
-		headerFrame,
+		overlayHeaderFrame,
 		text = "Price",
 		width = 13,
 		font = textHeaderFont
 		)
 	stockQuanityLabel = Label(
-		headerFrame,
+		overlayHeaderFrame,
 		text = "Quanity",
 		width = 13,
 		font = textHeaderFont
 		)
 	totalPriceLabel = Label(
-		headerFrame,
+		overlayHeaderFrame,
 		text = "Total",
 		width = 13,
 		font = textHeaderFont
@@ -397,15 +437,18 @@ def Display_Sales_Record_Callback():
 	totalPriceLabel.pack(side = LEFT, anchor = CENTER)
 
 	#List Stuff
-	Create_Sales_Record_List(stockOverlayFrame, 1)#the 1 is an oveload to set the text entry fields to disabled
+	Create_Sales_Record_List(overlayContentFrame, 1)#the 1 is an oveload to set the text entry fields to disabled
 
+	overlayElementsHeaderFrame = overlayHeaderFrame
+	overlayElementsContentFrame = overlayContentFrame
 
 	#Lock_Text_Entry() Function incomplete, and now optional. delete if not used
 
 	stockOverlayFrame.pack()
 
 def Generate_Sales_Report_Callback():
-	global overlayElementsMasterFrame
+	global overlayElementsHeaderFrame 
+	global overlayElementsContentFrame
 	global acceptState
 	acceptState = 5
 
@@ -425,35 +468,62 @@ def Generate_Sales_Report_Callback():
 		relief = "ridge"
 		)
 	stockOverlayFrame.pack_propagate(False)
-	Generate_Text_Entry(stockOverlayFrame, "Date", CENTER, 5, (5, 5), 10)
+
+	overlayHeaderFrame = Frame(
+		stockOverlayFrame,
+		width = 480
+		)
+	overlayHeaderFrame.pack(fill = X)
+
+	overlayContentFrame = Frame(
+		stockOverlayFrame,
+		width = 480
+		)
+	overlayContentFrame.pack(fill = X)
+
+	Generate_Text_Entry(overlayHeaderFrame, "Date", CENTER, 5, (5, 5), 10)
+
+	overlayElementsHeaderFrame = overlayHeaderFrame
+	overlayElementsContentFrame = overlayContentFrame
+
 	stockOverlayFrame.pack()
 
 def Accept_Button_Callback():
 	global acceptState
-	widgets = overlayElementsMasterFrame.winfo_children()
+	#widgets = overlayElementsMasterFrame.winfo_children()
+	
+	headerWidgets = overlayElementsHeaderFrame.winfo_children() #Note this includes Frames
+	contentWidgets = overlayElementsContentFrame.winfo_children() #Note this includes Frames
+	
 	Entries = list()
 	
 	
 	if acceptState == 1:
-		for widget in widgets:
+		for widget in contentWidgets:
 			if widget.winfo_class() == 'Entry':
 				Entries.append(widget.get())
 		# call add item function
+		print(Entries[0])
 		print(Entries[1])
-		print(Entries[2])
-		InsertItem(Entries[1], Entries[2])
+		InsertItem(Entries[1], Entries[1])
 	elif acceptState == 2:
 		tempList = list()
-		for rowFrame in widgets:
+
+		for widget in headerWidgets:
+			if(widget.winfo_class() == 'Entry'):
+				date = widget.get()
+
+
+		for rowFrame in contentWidgets:
 			tempList.clear()
-			print("Inside elements master frame")
 			print(rowFrame.winfo_class())
 			if rowFrame.winfo_class() == 'Frame':
 				for entry in rowFrame.winfo_children():
 					if((entry.winfo_class() == "Entry") and (entry.get() != "")):
 						tempList.append(entry.get())
-			#addToSales("02/10/2020", tempList[0], tempList[2], tempList[3])
-			print("Added Sales Record")
+			#addToSales(date, tempList[0], tempList[2], tempList[3])
+			print(tempList)
+		print("Added Sales Record")
 
 	elif acceptState == 3:
 		print("Editing a Sales Record")
@@ -623,7 +693,8 @@ print(overlayListElements)
 acceptState = 0
 
 #Overlay Elements Master Frame Reference
-overlayElementsMasterFrame = Frame()
+overlayElementsHeaderFrame = Frame()
+overlayElementsContentFrame = Frame()
 
 #Title Frame Creation
 titleFrame = Frame(
