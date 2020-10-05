@@ -1,6 +1,6 @@
 from tkinter import *
 #from InsertItem import *
-from Database_Queries import *
+#from Database_Queries import *
 import tkinter.font as tkfont
 
 #Function Declarations
@@ -29,6 +29,9 @@ def Title_Label_Creation(titleName):
 		font = subHeadingFont
 		)
 	tempTitleLabel.pack(fill=BOTH, pady = (30, 10))
+
+def Update_Button_Style():
+	print("Updating Button Style")
 
 #Generates an entry field, along with a label for the entry
 def Generate_Text_Entry(masterFrame, labelTitle, anchoredPos, paddingX, paddingY, textBoxLength):
@@ -452,6 +455,18 @@ def Generate_Sales_Report_Callback():
 	global acceptState
 	acceptState = 5
 
+	buttonWidth = 12
+	buttonHeight = 3
+
+	buttonWidthPixelRatio = buttonFont.measure("0")
+	print(buttonWidth)
+	print(buttonWidthPixelRatio)
+	print(buttonWidth*buttonWidthPixelRatio)
+
+	buttonHeightPixelRatio = buttonFont.metrics('linespace')
+	print(buttonHeightPixelRatio)
+	print(buttonHeight*buttonHeightPixelRatio)
+
 	Clear_Overlay()
 	Lock_Sub_Buttons()
 	Unlock_Accept_Button()
@@ -460,6 +475,7 @@ def Generate_Sales_Report_Callback():
 
 	print("Generating Sales Report....")
 	Title_Label_Creation("Sales Report")
+
 	stockOverlayFrame = Frame(
 		overlayFrame,
 		width = 480,
@@ -482,6 +498,40 @@ def Generate_Sales_Report_Callback():
 	overlayContentFrame.pack(fill = X)
 
 	Generate_Text_Entry(overlayHeaderFrame, "Date", CENTER, 5, (5, 5), 10)
+
+	buttonFrame = Frame(
+		overlayContentFrame,
+		width = (2*buttonWidth*buttonWidthPixelRatio),
+		height = (buttonHeight*buttonHeightPixelRatio)
+		)
+	buttonFrame.pack_propagate(False);
+	buttonFrame.pack()
+
+	weeklyButton = Button(
+		buttonFrame,
+		text = "Weekly",
+		width = buttonWidth,
+		height = 3,
+		font = buttonFont,
+		bg = LIGHTGRAY,
+		fg = ALMOSTBLACK,
+		state = ACTIVE
+		#command = Add_Stock_Callback
+		)
+	weeklyButton.pack(side = LEFT)
+
+	monthlyButton = Button(
+		buttonFrame,
+		text = "Monthly",
+		width = buttonWidth,
+		height = 3,
+		font = buttonFont,
+		bg = LIGHTGRAY,
+		fg = ALMOSTBLACK,
+		state = NORMAL
+		#command = Add_Stock_Callback
+		)
+	monthlyButton.pack(side = LEFT)
 
 	overlayElementsHeaderFrame = overlayHeaderFrame
 	overlayElementsContentFrame = overlayContentFrame
@@ -732,11 +782,12 @@ subMenuFrame = Frame(
 	)
 
 #Fonts
-buttonFont = ("Avenir", "14")
-headingFont = ("Avenir", "26", "bold")
-subHeadingFont = ("Avenir", "20", "bold")
+#buttonFont = ("Avenir", "14")
+buttonFont = tkfont.Font(family="Avenir", size=14, weight="normal")
+headingFont = tkfont.Font(family="Avenir", size=26, weight="bold") #("Avenir", "26", "bold")
+subHeadingFont = tkfont.Font(family="Avenir", size=20, weight="bold") #("Avenir", "20", "bold")
 #dateFont = ("Avenir", "18") If we end up doing a calender drop down box
-textFont = ("Avenir", "12")
+textFont = tkfont.Font(family="Avenir", size=12, weight="normal") #("Avenir", "12")
 #textHeaderFont = ("Avenir", "12", "bold")
 textHeaderFont = tkfont.Font(family="Avenir", size=12, weight="bold")
 
