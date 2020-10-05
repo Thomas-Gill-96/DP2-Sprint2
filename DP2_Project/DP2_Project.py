@@ -30,8 +30,39 @@ def Title_Label_Creation(titleName):
 		)
 	tempTitleLabel.pack(fill=BOTH, pady = (30, 10))
 
-def Update_Button_Style():
-	print("Updating Button Style")
+def Update_Exclusive_Buttons():
+	global reportOptionButtonState
+
+	buttons = list()
+	contentFrames = overlayElementsContentFrame.winfo_children()
+	for buttonFrame in contentFrames:
+		for button in buttonFrame.winfo_children():
+			buttons.append(button)
+
+	if(reportOptionButtonState == False):
+		print("Weekly Report Selected")
+		#Active Button
+		buttons[0]['bg'] = LIGHTERGRAY
+		buttons[0]['relief'] = 'sunken'
+		buttons[0]['state'] = DISABLED
+
+		#Non-active Button
+		buttons[1]['bg'] = LIGHTGRAY
+		buttons[1]['relief'] = 'raised'
+		buttons[1]['state'] = NORMAL
+	elif(reportOptionButtonState):
+		print("Monthly Report Selected")
+		
+		#Non-active Button
+		buttons[0]['bg'] = LIGHTGRAY
+		buttons[0]['relief'] = 'raised'
+		buttons[0]['state'] = NORMAL
+		
+		#Active Button
+		buttons[1]['bg'] = LIGHTERGRAY
+		buttons[1]['relief'] = 'sunken'
+		buttons[1]['state'] = DISABLED
+
 
 #Generates an entry field, along with a label for the entry
 def Generate_Text_Entry(masterFrame, labelTitle, anchoredPos, paddingX, paddingY, textBoxLength):
@@ -455,10 +486,8 @@ def Display_Sales_Record_Callback():
 	stockQuanityLabel.pack(side = LEFT, anchor = CENTER)
 	totalPriceLabel.pack(side = LEFT, anchor = CENTER)
 
-	#List Stuff
-	#Create_Sales_Record_List(overlayContentFrame, 1)#the 1 is an oveload to set the text entry fields to disabled
 	Create_Sales_Record_List(overlayContentFrame)
-	
+
 	overlayElementsHeaderFrame = overlayHeaderFrame
 	overlayElementsContentFrame = overlayContentFrame
 
@@ -470,20 +499,15 @@ def Display_Sales_Record_Callback():
 def Generate_Sales_Report_Callback():
 	global overlayElementsHeaderFrame 
 	global overlayElementsContentFrame
+	global reportOptionButtonState
 	global acceptState
 	acceptState = 5
-
+	reportOptionButtonState = False
 	buttonWidth = 12
-	buttonHeight = 3
+	buttonHeight = 2.5
 
 	buttonWidthPixelRatio = buttonFont.measure("0")
-	print(buttonWidth)
-	print(buttonWidthPixelRatio)
-	print(buttonWidth*buttonWidthPixelRatio)
-
 	buttonHeightPixelRatio = buttonFont.metrics('linespace')
-	print(buttonHeightPixelRatio)
-	print(buttonHeight*buttonHeightPixelRatio)
 
 	Clear_Overlay()
 	Lock_Sub_Buttons()
@@ -520,7 +544,10 @@ def Generate_Sales_Report_Callback():
 	buttonFrame = Frame(
 		overlayContentFrame,
 		width = (2*buttonWidth*buttonWidthPixelRatio),
-		height = (buttonHeight*buttonHeightPixelRatio)
+		height = (buttonHeight*buttonHeightPixelRatio),
+		borderwidth = 1,
+		relief = "sunken",
+		bg = LIGHTGRAY
 		)
 	buttonFrame.pack_propagate(False);
 	buttonFrame.pack()
@@ -530,11 +557,14 @@ def Generate_Sales_Report_Callback():
 		text = "Weekly",
 		width = buttonWidth,
 		height = 3,
+		relief = "sunken",
 		font = buttonFont,
-		bg = LIGHTGRAY,
+		bg = LIGHTERGRAY,
+		activebackground = LIGHTERGRAY,
 		fg = ALMOSTBLACK,
-		state = ACTIVE
-		#command = Add_Stock_Callback
+		disabledforeground = ALMOSTBLACK,
+		state = DISABLED,
+		command = Weekly_Button_Callback
 		)
 	weeklyButton.pack(side = LEFT)
 
@@ -543,11 +573,15 @@ def Generate_Sales_Report_Callback():
 		text = "Monthly",
 		width = buttonWidth,
 		height = 3,
+		relief = "raised",
 		font = buttonFont,
 		bg = LIGHTGRAY,
+		activebackground = LIGHTERGRAY,
+		#disabledbackground = LIGHTERGRAY,
 		fg = ALMOSTBLACK,
-		state = NORMAL
-		#command = Add_Stock_Callback
+		disabledforeground = ALMOSTBLACK,
+		state = NORMAL,
+		command = Monthly_Button_Callback
 		)
 	monthlyButton.pack(side = LEFT)
 
@@ -615,6 +649,18 @@ def Export_Button_Callback():
 	print("I Exported Something")
 	Clear_Overlay()
 	Lock_Sub_Buttons()
+
+def Weekly_Button_Callback():
+	global reportOptionButtonState
+
+	reportOptionButtonState = 0
+	Update_Exclusive_Buttons()
+
+def Monthly_Button_Callback():
+	global reportOptionButtonState
+
+	reportOptionButtonState = 1
+	Update_Exclusive_Buttons()
 
 #Generates and fills content for the title frame
 def Initialise_Title_Frame():
@@ -748,6 +794,7 @@ def Initialise_Sub_Menu_Frame():
 	AcceptButton.pack(side = LEFT,anchor = E)
 
 #Constants
+LIGHTERGRAY = "#cccccc"
 LIGHTGRAY = "#a6a6a6"
 ALMOSTBLACK = "#292929"
 
@@ -759,6 +806,7 @@ phpLogo = PhotoImage(file="images/logo2.png")
 overlayListElements = [4]
 print(overlayListElements)
 acceptState = 0
+reportOptionButtonState = bool
 
 #Overlay Elements Master Frame Reference
 overlayElementsHeaderFrame = Frame()
