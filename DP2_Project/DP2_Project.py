@@ -75,13 +75,29 @@ def Lock_Sub_Buttons():
 	for button in subMenuFrame.winfo_children():
 		button['state'] = DISABLED
 
-#test functionx
-#def Lock_Text_Entry():
-#	for entry in overlayElementsMasterFrame.winfo_children():
-    		
-		
-#Ideally the above function would be written to lock user input when displaying the text entries
-#however after too many days trying it is now down to an overload variable in Create_Sales_Record_List()
+#this funtion targets the entries (text inputs) on display record page
+# default toggles the state between DISABLED and NORMAL
+# call with lock, unlock to choose 'state' to set
+def Change_Entry_State(desiredState = 'toggle'):
+	widgets = overlayElementsContentFrame.winfo_children()
+	entries = []
+	#print(widgets)
+	for rowFrame in widgets:
+    		if(rowFrame.winfo_class() == "Frame"):
+    				for entry in rowFrame.winfo_children():
+    						if(entry.winfo_class() == "Entry"):
+    							entries.append(entry)
+	
+	for selected in entries:
+    		if(desiredState == 'toggle'):
+    				if(selected['state'] == NORMAL):
+        						selected['state'] = DISABLED
+    				elif(selected['state'] == DISABLED):
+    						selected['state'] = NORMAL
+    		elif(desiredState == 'unlock'):
+    				selected['state'] = NORMAL
+    		elif(desiredState == 'lock'):
+    				selected['state'] = DISABLED
 
 
 
@@ -440,12 +456,14 @@ def Display_Sales_Record_Callback():
 	totalPriceLabel.pack(side = LEFT, anchor = CENTER)
 
 	#List Stuff
-	Create_Sales_Record_List(overlayContentFrame, 1)#the 1 is an oveload to set the text entry fields to disabled
-
+	#Create_Sales_Record_List(overlayContentFrame, 1)#the 1 is an oveload to set the text entry fields to disabled
+	Create_Sales_Record_List(overlayContentFrame)
+	
 	overlayElementsHeaderFrame = overlayHeaderFrame
 	overlayElementsContentFrame = overlayContentFrame
 
-	#Lock_Text_Entry() Function incomplete, and now optional. delete if not used
+	#this function can be called without params to toggle state, or with the text 'lock' or 'unlock'
+	Change_Entry_State('lock')
 
 	stockOverlayFrame.pack()
 
