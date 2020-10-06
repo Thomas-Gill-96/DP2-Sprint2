@@ -1,6 +1,6 @@
 from tkinter import *
 #from InsertItem import *
-#from Database_Queries import *
+from Database_Queries import *
 import tkinter.font as tkfont
 
 #Function Declarations
@@ -668,7 +668,7 @@ def Accept_Button_Callback():
 				for entry in rowFrame.winfo_children():
 					if((entry.winfo_class() == "Entry") and (entry.get() != "")):
 						tempList.append(entry.get())
-			#addToSales(date, tempList[0], tempList[2], tempList[3])
+				addToSales(date, tempList[0], tempList[2], tempList[3])
 			print(tempList)
 		print("Added Sales Record")
 		Clear_Overlay()
