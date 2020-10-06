@@ -1,6 +1,6 @@
 from tkinter import *
 #from InsertItem import *
-from Database_Queries import *
+#from Database_Queries import *
 import tkinter.font as tkfont
 
 #Function Declarations
@@ -63,7 +63,6 @@ def Update_Exclusive_Buttons():
 		buttons[1]['relief'] = 'sunken'
 		buttons[1]['state'] = DISABLED
 
-
 #Generates an entry field, along with a label for the entry
 def Generate_Text_Entry(masterFrame, labelTitle, anchoredPos, paddingX, paddingY, textBoxLength, date = ''):
 	tempLabel = Label(
@@ -112,6 +111,7 @@ def Lock_Sub_Buttons():
 # call with lock, unlock to choose 'state' to set
 def Change_Entry_State(desiredState = 'toggle'):
 	widgets = overlayElementsContentFrame.winfo_children()
+	print(widgets)
 	entries = []
 	#print(widgets)
 	for rowFrame in widgets:
@@ -131,7 +131,8 @@ def Change_Entry_State(desiredState = 'toggle'):
     		elif(desiredState == 'lock'):
     				selected['state'] = DISABLED
 
-
+def Edit_Button_Unlock():
+    	Change_Entry_State('unlock')
 
 def Create_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, totalPrice, paddingX, paddingY):
 	
@@ -176,65 +177,12 @@ def Create_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, to
 
 	#print("Created a row of entries")
 
+#Locked sales function removed
 
-#this version is only called by display sales record so far
-def Create_Locked_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, totalPrice, paddingX, paddingY):
-
-	#Frame	
-	headerFrame1 = Frame(
-		masterFrame,
-		width = 480,
-		height = 10,
-		borderwidth = 2,
-		relief = "ridge"
-		)
-	headerFrame1.pack(fill = X)
-
-	#Entries
-	stockNameLabel1 = Entry(
-		headerFrame1,
-		width = 1,
-		font = buttonFont
-		)
-	
-	stockPriceLabel1 = Entry(
-		headerFrame1,
-		width = 1,
-		font = buttonFont
-		)
-	
-	stockQuanityLabel1 = Entry(
-		headerFrame1,
-		width = 1,
-		font = buttonFont
-		)
-	totalPriceLabel1 = Entry(
-		headerFrame1,
-		width = 1,
-		font = buttonFont
-		)
-
-	stockNameLabel1['state'] = DISABLED
-	stockPriceLabel1['state'] = DISABLED
-	stockQuanityLabel1['state'] = DISABLED
-	totalPriceLabel1['state'] = DISABLED
-
-	stockNameLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 2.5)
-	stockPriceLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.0)
-	stockQuanityLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.0)
-	totalPriceLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.5)
-
-def Create_Sales_Record_List(masterFrame , locked = 0):
-	#print(locked)
-
+def Create_Sales_Record_List(masterFrame):
 	for x in range(0, 4):
-		#add if to sleect open or locked
-		if(locked == 1):
-			Create_Locked_Sales_Record_Row(masterFrame, x, "", x, "", 20, 10)
-		else:
-			Create_Sales_Record_Row(masterFrame, x, "", x, "", 20, 10)
-	
-
+    		Create_Sales_Record_Row(masterFrame, x, "", x, "", 20, 10)
+		
 def Add_Stock_Callback():
 	global acceptState
 	acceptState = 1
@@ -279,7 +227,6 @@ def Add_Stock_Callback():
 
 	stockOverlayFrame.pack()
 	
-
 def Add_Sales_Record_Callback():
 	global overlayElementsHeaderFrame 
 	global overlayElementsContentFrame
@@ -366,6 +313,7 @@ def Add_Sales_Record_Callback():
 
 	stockOverlayFrame.pack()
 
+#below is unused, delete if changes are kept
 def Edit_Sales_Record_Callback():
 	global overlayElementsHeaderFrame 
 	global overlayElementsContentFrame
@@ -418,7 +366,7 @@ def Display_Sales_Record_Callback():
 	Unlock_Cancel_Button()
 	Unlock_Export_Button()
 
-	print("Displaying a sales record....")
+	#print("Displaying a sales record....")
 	Title_Label_Creation("Sales Record")
 	stockOverlayFrame = Frame(
 		overlayFrame,
@@ -429,17 +377,34 @@ def Display_Sales_Record_Callback():
 		)
 	stockOverlayFrame.pack_propagate(False)
 
+	editModeBtn  = Button(
+			master = overlayFrame,
+			text = "Click to edit",
+			width = 15,
+			height = 4,
+			font = buttonFont,
+			bg = LIGHTGRAY,
+			fg = ALMOSTBLACK,
+			state = ACTIVE,
+			command = Edit_Button_Unlock
+			)
+	editModeBtn.pack(side = RIGHT, anchor = N)
+
 	overlayHeaderFrame = Frame(
 		stockOverlayFrame,
 		width = 480
 		)
 	overlayHeaderFrame.pack(fill = X)
 
+	
+
 	overlayContentFrame = Frame(
 		stockOverlayFrame,
 		width = 480
 		)
 	overlayContentFrame.pack(fill = X)
+
+	
 
 	Generate_Text_Entry(overlayHeaderFrame, "Date", CENTER, 5, (5, 5), 10)
 
@@ -487,12 +452,14 @@ def Display_Sales_Record_Callback():
 	stockQuanityLabel.pack(side = LEFT, anchor = CENTER)
 	totalPriceLabel.pack(side = LEFT, anchor = CENTER)
 
+	#creates the rows which are then filled with entries
 	Create_Sales_Record_List(overlayContentFrame)
 
 	overlayElementsHeaderFrame = overlayHeaderFrame
 	overlayElementsContentFrame = overlayContentFrame
 
 	#this function can be called without params to toggle state, or with the text 'lock' or 'unlock'
+	#you will need to call 'unlock' before using a function like 'input' for example
 	Change_Entry_State('lock')
 
 	stockOverlayFrame.pack()
@@ -550,7 +517,7 @@ def Generate_Sales_Report_Callback():
 		relief = "sunken",
 		bg = LIGHTGRAY
 		)
-	buttonFrame.pack_propagate(False);
+	buttonFrame.pack_propagate(False)
 	buttonFrame.pack()
 
 	weeklyButton = Button(
@@ -632,7 +599,6 @@ def Draw_Sales_Report(date):
 
 	stockOverlayFrame.pack()
 
-
 def Accept_Button_Callback():
 	global acceptState
 	#widgets = overlayElementsMasterFrame.winfo_children()
@@ -694,10 +660,6 @@ def Accept_Button_Callback():
 		Lock_Sub_Buttons()
 		Draw_Sales_Report(date)
 
-
-
-	
-
 def Cancel_Button_Callback():
 	print("I Canceled Something")
 	Clear_Overlay()
@@ -736,7 +698,7 @@ def Initialise_Side_Menu_Frame():
 	#Logo Creation
 	logoLabel = Label(
 		master = logoFrame,
-		image = phpLogo
+		#image = phpLogo
 		)
 	logoLabel.pack(pady = (30,50))
 
@@ -770,6 +732,7 @@ def Initialise_Side_Menu_Frame():
 	addSalesRecordButton.pack(padx = 15, pady = 10)
 
 	#Edit Sales Record Button
+	"""
 	editSalesRecordButton = Button(
 		master=mainMenuButtonsFrame,
 		text = "Edit a Sales Record",
@@ -781,11 +744,12 @@ def Initialise_Side_Menu_Frame():
 		command = Edit_Sales_Record_Callback
 		)
 	editSalesRecordButton.pack(padx = 15, pady = 10)
+	"""
 
 	#Display Sales Record Button
 	displaySalesRecordButton = Button(
 		master=mainMenuButtonsFrame,
-		text = "Display a Sales Record",
+		text = "Display/Edit \na Sales Record",
 		width = 20,
 		height = 3,
 		font = buttonFont,
@@ -859,7 +823,7 @@ ALMOSTBLACK = "#292929"
 #Global Varaibles
 root = Tk()
 root.geometry('1280x960')
-phpLogo = PhotoImage(file="images/logo2.png")
+#phpLogo = PhotoImage(file="images/logo2.png")
 #overlayFrameList = [] No used anymore, Delete if no use is found
 overlayListElements = [4]
 print(overlayListElements)
