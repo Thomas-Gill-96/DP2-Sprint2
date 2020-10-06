@@ -65,7 +65,7 @@ def Update_Exclusive_Buttons():
 
 
 #Generates an entry field, along with a label for the entry
-def Generate_Text_Entry(masterFrame, labelTitle, anchoredPos, paddingX, paddingY, textBoxLength):
+def Generate_Text_Entry(masterFrame, labelTitle, anchoredPos, paddingX, paddingY, textBoxLength, date = ''):
 	tempLabel = Label(
 		masterFrame,
 		text = labelTitle,
@@ -77,8 +77,9 @@ def Generate_Text_Entry(masterFrame, labelTitle, anchoredPos, paddingX, paddingY
 		width = textBoxLength,
 		borderwidth = 2,
 		relief = "sunken",
-		font = textFont
+		font = textFont,
 		)
+	tempEntry.insert(0, date)
 	tempLabel.pack(anchor = anchoredPos, padx = paddingX, pady = paddingY)
 	tempEntry.pack(anchor = anchoredPos, padx = paddingX, pady = paddingY)
 
@@ -516,7 +517,7 @@ def Generate_Sales_Report_Callback():
 	Unlock_Export_Button()
 
 	print("Generating Sales Report....")
-	Title_Label_Creation("Sales Report")
+	Title_Label_Creation("Sales Report Options")
 
 	stockOverlayFrame = Frame(
 		overlayFrame,
@@ -590,6 +591,48 @@ def Generate_Sales_Report_Callback():
 
 	stockOverlayFrame.pack()
 
+def Draw_Sales_Report(date):
+	global overlayElementsHeaderFrame 
+	global overlayElementsContentFrame
+	global acceptState
+
+	acceptState = 6
+	Lock_Sub_Buttons()
+	#Unlock_Accept_Button()
+	Unlock_Cancel_Button()
+	Unlock_Export_Button()
+
+	Title_Label_Creation("Sales Report")
+
+	stockOverlayFrame = Frame(
+		overlayFrame,
+		width = 480,
+		height = 600,
+		borderwidth = 5,
+		relief = "ridge"
+		)
+	stockOverlayFrame.pack_propagate(False)
+
+	overlayHeaderFrame = Frame(
+		stockOverlayFrame,
+		width = 480
+		)
+	overlayHeaderFrame.pack(fill = X)
+
+	overlayContentFrame = Frame(
+		stockOverlayFrame,
+		width = 480
+		)
+	overlayContentFrame.pack(fill = X)
+
+	Generate_Text_Entry(overlayHeaderFrame, "Date", CENTER, 5, (5, 5), 10, date)
+
+	overlayElementsHeaderFrame = overlayHeaderFrame
+	overlayElementsContentFrame = overlayContentFrame
+
+	stockOverlayFrame.pack()
+
+
 def Accept_Button_Callback():
 	global acceptState
 	#widgets = overlayElementsMasterFrame.winfo_children()
@@ -608,6 +651,8 @@ def Accept_Button_Callback():
 		print(Entries[0])
 		print(Entries[1])
 		InsertItem(Entries[1], Entries[1])
+		Clear_Overlay()
+		Lock_Sub_Buttons()
 	elif acceptState == 2:
 		tempList = list()
 
@@ -626,17 +671,30 @@ def Accept_Button_Callback():
 			#addToSales(date, tempList[0], tempList[2], tempList[3])
 			print(tempList)
 		print("Added Sales Record")
+		Clear_Overlay()
+		Lock_Sub_Buttons()
 
 	elif acceptState == 3:
 		print("Editing a Sales Record")
+		Clear_Overlay()
+		Lock_Sub_Buttons()
 	elif acceptState == 4:
 		print("Displaying a Sales Record")
+		Clear_Overlay()
+		Lock_Sub_Buttons()
 	elif acceptState == 5:
 		print("Generating Sales Report")
+		print(headerWidgets)
+		for widget in headerWidgets:
+			if(widget.winfo_class() == 'Entry'):
+				date = widget.get()
+		print(date)
+		#Get_Report_Data(reportOptionButtonState, date)
+		Clear_Overlay()
+		Lock_Sub_Buttons()
+		Draw_Sales_Report(date)
 
-	Clear_Overlay()
-	Lock_Sub_Buttons()
-	print("I Accepted Something")
+
 
 	
 
