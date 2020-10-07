@@ -119,6 +119,12 @@ def editSales(aFieldIndex, aRecord, aValue):
     sql = ("UPDATE Sales SET " + Field + " = '" + Value + "' WHERE " + Field + " = '" + Record + "'")
     mycursor.execute (sql)
 
+def LoadInData():
+    sql = ("SELECT * FROM Sales")
+    mycursor.execute (sql)
+    temp = mycursor.fetchall()
+    return temp
+
 mydb = mysql.connector.connect(
     host="localhost",
     user="root",
