@@ -3,7 +3,14 @@ from tkinter import *
 #from Database_Queries import *
 import tkinter.font as tkfont
 
+'''
+If you are uncommenting the above lines, you might also want to ctrl+F 'php' and uncomment the two logo lines :)
+
+'''
+
+
 #Function Declarations
+
 
 #Clear Overlay Screen
 def Clear_Overlay():
@@ -111,9 +118,8 @@ def Lock_Sub_Buttons():
 # call with lock, unlock to choose 'state' to set
 def Change_Entry_State(desiredState = 'toggle'):
 	widgets = overlayElementsContentFrame.winfo_children()
-	print(widgets)
-	entries = []
 	#print(widgets)
+	entries = []
 	for rowFrame in widgets:
     		if(rowFrame.winfo_class() == "Frame"):
     				for entry in rowFrame.winfo_children():
@@ -176,8 +182,6 @@ def Create_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, to
 
 
 	#print("Created a row of entries")
-
-#Locked sales function removed
 
 def Create_Sales_Record_List(masterFrame):
 	for x in range(0, 4):
@@ -312,6 +316,78 @@ def Add_Sales_Record_Callback():
 	Create_Sales_Record_List(overlayContentFrame)
 
 	stockOverlayFrame.pack()
+
+def Display_Checkout_Overlay():
+    	
+		global overlayElementsHeaderFrame
+		global overlayElementsContentFrame
+		Clear_Overlay()
+
+		CheckoutOverlayFrame = Frame(
+			overlayFrame,
+			width = 480,
+			height = 600,
+			borderwidth = 5,
+			relief = "ridge"
+			)
+
+		overlayHeaderFrame = Frame(
+			CheckoutOverlayFrame,
+			width = 480
+			)
+		overlayHeaderFrame.pack(fill = X)
+
+		overlayContentFrame = Frame(
+			CheckoutOverlayFrame,
+			width = 480
+			)
+		overlayContentFrame.pack(fill = X)
+
+		'''
+		TODO: find a way to set the frame to generate in the middle, or at least nicely
+			  and try find out why the label didnt stick to the header content and instead got stuck in the frame???
+		'''
+
+		#label in header content frame
+		stockNameLabel = Label(
+			overlayHeaderFrame,
+			text = "Select a record to display",
+			width = 20,
+			font = textHeaderFont
+			)
+		stockNameLabel.pack_propagate(False)
+		stockNameLabel.pack(side = TOP, anchor = CENTER)
+
+		#entry and enter button in content frame
+		CheckoutEntry = Entry(
+			overlayContentFrame,
+			width = 1,
+			font = buttonFont
+			)
+	
+		CheckoutEntry.pack(side = TOP, fill = X, anchor = CENTER, expand = 2.5)
+
+		CheckoutButton  = Button(
+			master = overlayContentFrame,
+			text = "Checkout",
+			width = 10,
+			height = 2,
+			font = buttonFont,
+			bg = LIGHTGRAY,
+			fg = ALMOSTBLACK,
+			state = ACTIVE,
+			command = Checkout_Button_Callback
+			)
+		CheckoutButton.pack(side = BOTTOM, anchor = S)
+
+
+		overlayElementsHeaderFrame = overlayHeaderFrame
+		overlayElementsContentFrame = overlayContentFrame
+
+		CheckoutOverlayFrame.pack()
+
+def Checkout_Button_Callback():
+    	print('I will be the function a checkout button does')
 
 #below is unused, delete if changes are kept
 def Edit_Sales_Record_Callback():
@@ -664,6 +740,8 @@ def Cancel_Button_Callback():
 	print("I Canceled Something")
 	Clear_Overlay()
 	Lock_Sub_Buttons()
+	#TEMPORARY TESTER!!! REMOVE LINE BELOW WHENEVER YOU SEE IT!!!
+	Display_Checkout_Overlay()
 
 def Export_Button_Callback():
 	print("I Exported Something")
