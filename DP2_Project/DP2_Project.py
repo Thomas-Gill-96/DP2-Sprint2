@@ -183,10 +183,25 @@ def Create_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, to
 
 	#print("Created a row of entries")
 
-def Create_Sales_Record_List(masterFrame):
-	for x in range(0, 4):
-    		Create_Sales_Record_Row(masterFrame, x, "", x, "", 20, 10)
-		
+def Create_Sales_Record_List(masterFrame, numberOfRows=6):
+	for x in range(0, numberOfRows):
+		Create_Sales_Record_Row(masterFrame, x, "", x, "", 20, 10)
+
+def Populate_Sales_Report_Entries(listOfData):
+	
+	headerWidgets = overlayElementsHeaderFrame.winfo_children() #Note this includes Frames
+	contentWidgets = overlayElementsContentFrame.winfo_children() #Note this includes Frames
+
+	counter = 0
+	for rowFrame in contentWidgets:
+		for entry in rowFrame.winfo_children():
+			if((entry.winfo_class() == 'Entry') and (counter < len(listOfData))):
+				entry.insert(0, listOfData[counter])
+				#entry.insert(0, str(counter))
+				counter += 1
+	print("Here")
+
+
 def Add_Stock_Callback():
 	global acceptState
 	acceptState = 1
@@ -346,6 +361,13 @@ def Display_Checkout_Overlay():
 		'''
 		TODO: find a way to set the frame to generate in the middle, or at least nicely
 			  and try find out why the label didnt stick to the header content and instead got stuck in the frame???
+
+		Isaac(Hope this helps): 
+			  For what you want to achieve you will need to look into pack_propergate, side and anchor which all affects how things are
+			  drawn into the window.
+			  
+			  As for the label, you have applyed the border to the CheckoutOverlayFrame which contains the header frame, hence the label
+			  is in the correct spot but the border is being applied to the wrong frame (for what you want)
 		'''
 
 		#label in header content frame
@@ -668,10 +690,21 @@ def Draw_Sales_Report(date):
 		)
 	overlayContentFrame.pack(fill = X)
 
+	#logoLabel = Label(
+	#	master = overlayHeaderFrame,
+	#	image = phpLogo
+	#	)
+	#logoLabel.pack(side = LEFT, pady = (30,50))
+
 	Generate_Text_Entry(overlayHeaderFrame, "Date", CENTER, 5, (5, 5), 10, date)
+	Create_Empty_Frame(overlayHeaderFrame, 100)
+	Create_Sales_Record_List(overlayContentFrame, 6)
+	tempList = list()
 
 	overlayElementsHeaderFrame = overlayHeaderFrame
 	overlayElementsContentFrame = overlayContentFrame
+
+	Populate_Sales_Report_Entries()
 
 	stockOverlayFrame.pack()
 
@@ -776,7 +809,7 @@ def Initialise_Side_Menu_Frame():
 	#Logo Creation
 	logoLabel = Label(
 		master = logoFrame,
-		#image = phpLogo
+		image = phpLogo
 		)
 	logoLabel.pack(pady = (30,50))
 
@@ -901,7 +934,7 @@ ALMOSTBLACK = "#292929"
 #Global Varaibles
 root = Tk()
 root.geometry('1280x960')
-#phpLogo = PhotoImage(file="images/logo2.png")
+phpLogo = PhotoImage(file="images/logo2.png")
 #overlayFrameList = [] No used anymore, Delete if no use is found
 overlayListElements = [4]
 print(overlayListElements)
