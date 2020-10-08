@@ -105,6 +105,20 @@ def editSales(aFieldIndex, aRecord, aValue):
     sql = ("UPDATE Sales SET " + Field + " = '" + Value + "' WHERE " + Field + " = '" + Record + "'")
     mycursor.execute (sql)
 
+def SelectItemNames():
+    itemNameList = []
+    mycursor.execute("SELECT item_name FROM items")
+    for x in mycursor:
+        itemNameList.append(x)
+    return itemNameList
+
+def SelectItemPrices():
+    itemPriceList = []
+    mycursor.execute("SELECT item_price FROM items")
+    for x in mycursor:
+        itemPriceList.append(x)
+    return itemPriceList
+
 mydb = mysql.connector.connect(
     host="localhost",
     user="root",
