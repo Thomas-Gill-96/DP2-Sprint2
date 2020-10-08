@@ -1,6 +1,6 @@
 from tkinter import *
 #from InsertItem import *
-#from Database_Queries import *
+from Database_Queries import *
 import tkinter.font as tkfont
 
 #Function Declarations
@@ -145,10 +145,12 @@ def Create_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, to
 	headerFrame1.pack(fill = X)
 
 	#Entries
-	stockNameLabel1 = Entry(
+	itemClicked = StringVar()
+	itemList = SelectItemNames() 
+	stockNameLabel1 = OptionMenu(
 		headerFrame1,
-		width = 1,
-		font = buttonFont
+		itemClicked,
+		*itemList
 		)
 	stockPriceLabel1 = Entry(
 		headerFrame1,
