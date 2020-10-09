@@ -145,8 +145,11 @@ def Create_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, to
 	headerFrame1.pack(fill = X)
 
 	#Entries
-	itemClicked = StringVar()
 	itemList = SelectItemNames() 
+	itemPriceList = SelectItemPrices()
+	itemClicked = StringVar()
+	itemClicked.set(itemList[0])
+	
 	stockNameLabel1 = OptionMenu(
 		headerFrame1,
 		itemClicked,
@@ -155,9 +158,13 @@ def Create_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, to
 	stockPriceLabel1 = Entry(
 		headerFrame1,
 		width = 1,
-		font = buttonFont
+		font = buttonFont,
 		)
+
+
+	#stockPriceLabel1.insert(0, itemClicked.get())
 	
+
 	stockQuanityLabel1 = Entry(
 		headerFrame1,
 		width = 1,
@@ -174,8 +181,24 @@ def Create_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, to
 	stockQuanityLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.0)
 	totalPriceLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.5)
 
+def Get_Item_Price(item):
+	items = SelectItems()
+	for i in items:
+		if (item == i[0]):
+			return i[1]
 
-	#print("Created a row of entries")
+def UpdatePrice():
+	contentWidgets = overlayElementsContentFrame.winfo_children()
+	for rowframe in contentWidgets:
+		for widget in rowframe:
+			if widget.winfo_class() == 'Entry':
+				Entries.append(widget.get())
+
+	strippeditem = itemClicked.get().strip("(),'")
+	stockPriceLabel1.insert(0, Get_Item_Price(strippeditem))
+
+
+#print("Created a row of entries")
 
 
 #this version is only called by display sales record so far
@@ -609,7 +632,7 @@ def Accept_Button_Callback():
 		# call add item function
 		print(Entries[0])
 		print(Entries[1])
-		InsertItem(Entries[1], Entries[1])
+		InsertItem(Entries[0], Entries[1])
 	elif acceptState == 2:
 		tempList = list()
 

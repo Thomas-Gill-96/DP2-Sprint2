@@ -119,6 +119,11 @@ def SelectItemPrices():
         itemPriceList.append(x)
     return itemPriceList
 
+def SelectItems():
+    mycursor.execute("SELECT item_name, item_price FROM items")
+    records = mycursor.fetchall()
+    return records
+
 mydb = mysql.connector.connect(
     host="localhost",
     user="root",
