@@ -1,11 +1,11 @@
 import mysql.connector
 
 def cursorReset():
-    cursor = mydb.cursor()
+    mycursor = mydb.cursor()
 
 def printSales():
-    cursor.execute ('SELECT * FROM Sales')
-    records = cursor.fetchall()
+    mycursor.execute ('SELECT * FROM Sales')
+    records = mycursor.fetchall()
 
     if not records:
         print("The records are currently empty.")
@@ -28,15 +28,29 @@ def InsertItem (itemName, itemPrice):
         print(mycursor.rowcount, "record inserted")
 
 #Can't be using Inputs, all data should be passed through variables
-def addToSales(aSalesDate, aItemID, aItemQuant, aTotalCost):
+def addToSales(aSalesDate, aItemName, aItemQuant, aTotalCost):
     sale_date = aSalesDate
-    item_id = aItemID
+    item_id = ""
+    aItem_name = aItemName
     item_quantity = aItemQuant
     total_cost = aTotalCost
+
+    mycursor.execute("SELECT item_id FROM Items WHERE item_name = '" + aItemName + "'")
+    records = mycursor.fetchall()
+
+    if not records:
+        print("ITS NOTHING!")
+    else:
+        for row in records:
+            print("ID: " + str(row[0]))
+            item_id = str(row[0])
+    cursorReset()
 
     sql = "INSERT INTO Sales (sale_date, item_id, item_quantity, total_cost) VALUES (%s, %s, %s, %s)"
     val = (sale_date, item_id, item_quantity, total_cost)
     mycursor.execute (sql, val)
+    mydb.commit()
+    print(mycursor.rowcount, "record inserted")
 
 def GetSalesRecord(startDate = "", endDate = "", saleID = ""):
     query = ""
@@ -64,7 +78,7 @@ def editSales(aFieldIndex, aRecord, aValue):
     Value = aValue
     
     print('Select a field to edit: ')
-    cursor.execute ('desc Sales')
+    mycursor.execute ('desc Sales')
     temp = mycursor.fetchall()
     for row in temp:
         print(row[0])
@@ -85,7 +99,7 @@ def editSales(aFieldIndex, aRecord, aValue):
     print('Select which record to edit: ')
     sql = ("SELECT " + Field + " FROM Sales")
     mycursor.execute (sql)
-    temp = cursor.fetchall()
+    temp = mycursor.fetchall()
     for row in temp:
         print(row[0])
     inputValid = False
@@ -105,6 +119,7 @@ def editSales(aFieldIndex, aRecord, aValue):
     sql = ("UPDATE Sales SET " + Field + " = '" + Value + "' WHERE " + Field + " = '" + Record + "'")
     mycursor.execute (sql)
 
+<<<<<<< HEAD
 def SelectItemNames():
     itemNameList = []
     mycursor.execute("SELECT item_name FROM items")
@@ -123,6 +138,13 @@ def SelectItems():
     mycursor.execute("SELECT item_name, item_price FROM items")
     records = mycursor.fetchall()
     return records
+=======
+def LoadInData():
+    sql = ("SELECT * FROM Items INNER JOIN Sales ON Items.item_id = Sales.item_id")
+    mycursor.execute (sql)
+    temp = mycursor.fetchall()
+    return temp
+>>>>>>> GUI
 
 mydb = mysql.connector.connect(
     host="localhost",
