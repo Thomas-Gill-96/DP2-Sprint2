@@ -865,10 +865,13 @@ def Accept_Button_Callback():
 				date = widget.get()
 		print(date)
 		#Tansel/Tom This is meant to be whatever query you wrote
-		#Get_Report_Data(reportOptionButtonState, date)
+		Get_Report_Data(date, reportOptionButtonState)
 		Clear_Overlay()
 		Lock_Sub_Buttons()
 		Draw_Sales_Report(date)
+
+def Get_Report_Data(inputDate = "", period = False):
+	
 
 def Cancel_Button_Callback():
 	print("I Canceled Something")
