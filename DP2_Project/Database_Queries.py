@@ -119,7 +119,7 @@ def editSales(aFieldIndex, aRecord, aValue):
     sql = ("UPDATE Sales SET " + Field + " = '" + Value + "' WHERE " + Field + " = '" + Record + "'")
     mycursor.execute (sql)
 
-<<<<<<< HEAD
+
 def SelectItemNames():
     itemNameList = []
     mycursor.execute("SELECT item_name FROM items")
@@ -138,19 +138,19 @@ def SelectItems():
     mycursor.execute("SELECT item_name, item_price FROM items")
     records = mycursor.fetchall()
     return records
-=======
+
 def LoadInData():
     sql = ("SELECT * FROM Items INNER JOIN Sales ON Items.item_id = Sales.item_id")
     mycursor.execute (sql)
     temp = mycursor.fetchall()
     return temp
->>>>>>> GUI
+
 
 mydb = mysql.connector.connect(
     host="localhost",
     user="root",
     password="",
-    database="sreps"
+    database="db_name"
 )
 print(mydb)
 mycursor = mydb.cursor()

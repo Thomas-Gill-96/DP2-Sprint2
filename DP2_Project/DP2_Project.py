@@ -189,7 +189,7 @@ def Create_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, to
 	stockQuanityLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.0)
 	totalPriceLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.5)
 
-<<<<<<< HEAD
+
 def Get_Item_Price(item):
 	items = SelectItems()
 	for i in items:
@@ -211,8 +211,8 @@ def UpdatePrice():
 
 
 #this version is only called by display sales record so far
-def Create_Locked_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, totalPrice, paddingX, paddingY):
-=======
+#def Create_Locked_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, totalPrice, paddingX, paddingY):
+
 def Create_Entry_Row(masterFrame, stockName, stockPrice, stockQuanity, totalPrice, paddingX, paddingY):
 	
 	#Frame
@@ -252,7 +252,7 @@ def Create_Entry_Row(masterFrame, stockName, stockPrice, stockQuanity, totalPric
 	stockPriceLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.0)
 	stockQuanityLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.0)
 	totalPriceLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.5)
->>>>>>> GUI
+
 
 #Does this work for multiple lines of code?
 def Create_Entry_Row_Prefill(masterFrame, stockName, stockPrice, stockQuanity, totalPrice, paddingX, paddingY):
@@ -823,13 +823,11 @@ def Accept_Button_Callback():
 		# call add item function
 		print(Entries[0])
 		print(Entries[1])
-<<<<<<< HEAD
+
 		InsertItem(Entries[0], Entries[1])
-=======
-		InsertItem(Entries[1], Entries[1])
 		Clear_Overlay()
 		Lock_Sub_Buttons()
->>>>>>> GUI
+
 	elif acceptState == 2:
 		tempList = list()
 
@@ -912,7 +910,7 @@ def Initialise_Side_Menu_Frame():
 	#Logo Creation
 	logoLabel = Label(
 		master = logoFrame,
-		image = phpLogo
+		#image = phpLogo
 		)
 	logoLabel.pack(pady = (30,50))
 
@@ -1037,7 +1035,7 @@ ALMOSTBLACK = "#292929"
 #Global Varaibles
 root = Tk()
 root.geometry('1280x960')
-phpLogo = PhotoImage(file="images/logo2.png")
+#phpLogo = PhotoImage(file="images/logo2.png")
 #overlayFrameList = [] No used anymore, Delete if no use is found
 overlayListElements = [4]
 print(overlayListElements)
