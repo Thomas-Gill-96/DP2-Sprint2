@@ -180,11 +180,48 @@ def Create_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, to
 	stockQuanityLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.0)
 	totalPriceLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.5)
 
+def Create_Entry_Row(masterFrame, stockName, stockPrice, stockQuanity, totalPrice, paddingX, paddingY):
+	
+	#Frame
+	headerFrame1 = Frame(
+		masterFrame,
+		width = 480,
+		height = 10,
+		borderwidth = 2,
+		relief = "ridge"
+		)
+	headerFrame1.pack(fill = X)
 
-	#print("Created a row of entries")
+	#Entries
+	stockNameLabel1 = Entry(
+		headerFrame1,
+		width = 1,
+		font = buttonFont
+		)
+	stockPriceLabel1 = Entry(
+		headerFrame1,
+		width = 1,
+		font = buttonFont
+		)
+	
+	stockQuanityLabel1 = Entry(
+		headerFrame1,
+		width = 1,
+		font = buttonFont
+		)
+	totalPriceLabel1 = Entry(
+		headerFrame1,
+		width = 1,
+		font = buttonFont
+		)
+	
+	stockNameLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 2.5)
+	stockPriceLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.0)
+	stockQuanityLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.0)
+	totalPriceLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.5)
 
 #Does this work for multiple lines of code?
-def Create_Sales_Record_Row_Prefill(masterFrame, stockName, stockPrice, stockQuanity, totalPrice, paddingX, paddingY):
+def Create_Entry_Row_Prefill(masterFrame, stockName, stockPrice, stockQuanity, totalPrice, paddingX, paddingY):
 	
 	#Frame
 	headerFrame1 = Frame(
@@ -232,14 +269,20 @@ def Create_Sales_Record_Row_Prefill(masterFrame, stockName, stockPrice, stockQua
 
 	#print("Created a row of entries")
 
+def Create_Entry_List(masterFrame, numberOfRows=6):
+	for x in range(0, numberOfRows):
+		Create_Entry_Row(masterFrame, x, "", x, "", 20, 10)
+
+def Display_Entry_List(masterFrame, aListOfData):
+	records = aListOfData
+	for row in records:
+		Create_Entry_Row_Prefill(masterFrame, row[1], row[2], row[6], row[7], 20, 10)
+
 def Create_Sales_Record_List(masterFrame, numberOfRows=6):
 	for x in range(0, numberOfRows):
 		Create_Sales_Record_Row(masterFrame, x, "", x, "", 20, 10)
 
-def Display_Sales_Record_List(masterFrame, aListOfData):
-	records = aListOfData
-	for row in records:
-		Create_Sales_Record_Row_Prefill(masterFrame, row[1], row[2], row[6], row[7], 20, 10)
+
 
 def Populate_Sales_Report_Entries(listOfData=list()):
 	
@@ -570,8 +613,8 @@ def Display_Sales_Record_Callback():
 	Create_List_Titles(overlayHeaderFrame)
 
 	#creates the rows which are then filled with entries
-	#Create_Sales_Record_List(overlayContentFrame)
-	Display_Sales_Record_List(overlayContentFrame, LoadInData())
+	#Create_Entry_List(overlayContentFrame)
+	Display_Entry_List(overlayContentFrame, LoadInData())
 
 	overlayElementsHeaderFrame = overlayHeaderFrame
 	overlayElementsContentFrame = overlayContentFrame
@@ -719,7 +762,7 @@ def Draw_Sales_Report(date):
 	Generate_Text_Entry(overlayHeaderFrame, "Date", CENTER, 5, (5, 5), 10, date)
 	Create_Empty_Frame(overlayHeaderFrame, 80)
 	Create_List_Titles(overlayHeaderFrame)
-	Create_Sales_Record_List(overlayContentFrame, 6)
+	Create_Entry_List(overlayContentFrame, 6)
 	tempList = list()
 
 	overlayElementsHeaderFrame = overlayHeaderFrame
