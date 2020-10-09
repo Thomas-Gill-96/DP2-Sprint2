@@ -120,7 +120,7 @@ def editSales(aFieldIndex, aRecord, aValue):
     mycursor.execute (sql)
 
 def LoadInData():
-    sql = ("SELECT * FROM Sales")
+    sql = ("SELECT * FROM Items INNER JOIN Sales ON Items.item_id = Sales.item_id")
     mycursor.execute (sql)
     temp = mycursor.fetchall()
     return temp

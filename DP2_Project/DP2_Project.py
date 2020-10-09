@@ -238,7 +238,7 @@ def Create_Sales_Record_List(masterFrame, numberOfRows=6):
 def Display_Sales_Record_List(masterFrame, aListOfData):
 	records = aListOfData
 	for row in records:
-		Create_Sales_Record_Row_Prefill(masterFrame, row[0], row[1], row[3], row[4], 20, 10)
+		Create_Sales_Record_Row_Prefill(masterFrame, row[1], row[2], row[6], row[7], 20, 10)
 
 def Populate_Sales_Report_Entries(listOfData):
 	
