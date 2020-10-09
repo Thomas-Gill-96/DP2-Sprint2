@@ -183,6 +183,7 @@ def Create_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, to
 
 	#print("Created a row of entries")
 
+#Does this work for multiple lines of code?
 def Create_Sales_Record_Row_Prefill(masterFrame, stockName, stockPrice, stockQuanity, totalPrice, paddingX, paddingY):
 	
 	#Frame
@@ -240,7 +241,7 @@ def Display_Sales_Record_List(masterFrame, aListOfData):
 	for row in records:
 		Create_Sales_Record_Row_Prefill(masterFrame, row[1], row[2], row[6], row[7], 20, 10)
 
-def Populate_Sales_Report_Entries(listOfData):
+def Populate_Sales_Report_Entries(listOfData=list()):
 	
 	headerWidgets = overlayElementsHeaderFrame.winfo_children() #Note this includes Frames
 	contentWidgets = overlayElementsContentFrame.winfo_children() #Note this includes Frames
@@ -252,8 +253,51 @@ def Populate_Sales_Report_Entries(listOfData):
 				entry.insert(0, listOfData[counter])
 				#entry.insert(0, str(counter))
 				counter += 1
-	print("Here")
 
+
+def Create_List_Titles(master):
+	'''
+	No yet used as it failed to solve the problem, needs more time investment to fiddle with screen widths or text sizes
+
+	zeroWidth = textHeaderFont.measure("0")
+	#Header Frame
+	labelWidth = (480/4)/zeroWidth
+	#print(labelWidth)
+	'''
+
+	#Labels
+	stockNameLabel = Label(
+		master,
+		text = "Stock Name",
+		width = 13,
+		font = textHeaderFont
+		)
+	stockPriceLabel = Label(
+		master,
+		text = "Price",
+		width = 13,
+		font = textHeaderFont
+		)
+	stockQuanityLabel = Label(
+		master,
+		text = "Quanity",
+		width = 13,
+		font = textHeaderFont
+		)
+	totalPriceLabel = Label(
+		master,
+		text = "Total",
+		width = 13,
+		font = textHeaderFont
+		)
+	stockNameLabel.pack_propagate(False)
+	stockPriceLabel.pack_propagate(False)
+	stockQuanityLabel.pack_propagate(False)
+	totalPriceLabel.pack_propagate(False)
+	stockNameLabel.pack(side = LEFT, anchor = CENTER)
+	stockPriceLabel.pack(side = LEFT, anchor = CENTER)
+	stockQuanityLabel.pack(side = LEFT, anchor = CENTER)
+	totalPriceLabel.pack(side = LEFT, anchor = CENTER)
 
 def Add_Stock_Callback():
 	global acceptState
@@ -336,46 +380,7 @@ def Add_Sales_Record_Callback():
 
 	Create_Empty_Frame(overlayHeaderFrame, 50)
 
-	#Move to a function later
-	zeroWidth = textHeaderFont.measure("0")
-
-	#Header Frame
-	labelWidth = (480/4)/zeroWidth
-	#print(labelWidth)
-	
-	#Labels
-	stockNameLabel = Label(
-		overlayHeaderFrame,
-		text = "Stock Name",
-		width = 13,
-		font = textHeaderFont
-		)
-	stockPriceLabel = Label(
-		overlayHeaderFrame,
-		text = "Price",
-		width = 13,
-		font = textHeaderFont
-		)
-	stockQuanityLabel = Label(
-		overlayHeaderFrame,
-		text = "Quanity",
-		width = 13,
-		font = textHeaderFont
-		)
-	totalPriceLabel = Label(
-		overlayHeaderFrame,
-		text = "Total",
-		width = 13,
-		font = textHeaderFont
-		)
-	stockNameLabel.pack_propagate(False)
-	stockPriceLabel.pack_propagate(False)
-	stockQuanityLabel.pack_propagate(False)
-	totalPriceLabel.pack_propagate(False)
-	stockNameLabel.pack(side = LEFT, anchor = CENTER)
-	stockPriceLabel.pack(side = LEFT, anchor = CENTER)
-	stockQuanityLabel.pack(side = LEFT, anchor = CENTER)
-	totalPriceLabel.pack(side = LEFT, anchor = CENTER)
+	Create_List_Titles(overlayHeaderFrame)
 
 	overlayElementsHeaderFrame = overlayHeaderFrame
 	overlayElementsContentFrame = overlayContentFrame
@@ -561,47 +566,8 @@ def Display_Sales_Record_Callback():
 
 
 	Create_Empty_Frame(overlayHeaderFrame, 50)
-	
-	#Move to a function later
-	zeroWidth = textHeaderFont.measure("0")\
-	
-	#Header Frame
-	labelWidth = (480/4)/zeroWidth
-	#print(labelWidth)
 
-	#Labels
-	stockNameLabel = Label(
-		overlayHeaderFrame,
-		text = "Stock Name",
-		width = 13,
-		font = textHeaderFont
-		)
-	stockPriceLabel = Label(
-		overlayHeaderFrame,
-		text = "Price",
-		width = 13,
-		font = textHeaderFont
-		)
-	stockQuanityLabel = Label(
-		overlayHeaderFrame,
-		text = "Quanity",
-		width = 13,
-		font = textHeaderFont
-		)
-	totalPriceLabel = Label(
-		overlayHeaderFrame,
-		text = "Total",
-		width = 13,
-		font = textHeaderFont
-		)
-	stockNameLabel.pack_propagate(False)
-	stockPriceLabel.pack_propagate(False)
-	stockQuanityLabel.pack_propagate(False)
-	totalPriceLabel.pack_propagate(False)
-	stockNameLabel.pack(side = LEFT, anchor = CENTER)
-	stockPriceLabel.pack(side = LEFT, anchor = CENTER)
-	stockQuanityLabel.pack(side = LEFT, anchor = CENTER)
-	totalPriceLabel.pack(side = LEFT, anchor = CENTER)
+	Create_List_Titles(overlayHeaderFrame)
 
 	#creates the rows which are then filled with entries
 	#Create_Sales_Record_List(overlayContentFrame)
@@ -751,7 +717,8 @@ def Draw_Sales_Report(date):
 	#logoLabel.pack(side = LEFT, pady = (30,50))
 
 	Generate_Text_Entry(overlayHeaderFrame, "Date", CENTER, 5, (5, 5), 10, date)
-	Create_Empty_Frame(overlayHeaderFrame, 100)
+	Create_Empty_Frame(overlayHeaderFrame, 80)
+	Create_List_Titles(overlayHeaderFrame)
 	Create_Sales_Record_List(overlayContentFrame, 6)
 	tempList = list()
 
@@ -818,6 +785,7 @@ def Accept_Button_Callback():
 			if(widget.winfo_class() == 'Entry'):
 				date = widget.get()
 		print(date)
+		#Tansel/Tom This is meant to be whatever query you wrote
 		#Get_Report_Data(reportOptionButtonState, date)
 		Clear_Overlay()
 		Lock_Sub_Buttons()
@@ -828,7 +796,7 @@ def Cancel_Button_Callback():
 	Clear_Overlay()
 	Lock_Sub_Buttons()
 	#TEMPORARY TESTER!!! REMOVE LINE BELOW WHENEVER YOU SEE IT!!!
-	Display_Checkout_Overlay()
+	#Display_Checkout_Overlay()
 
 def Export_Button_Callback():
 	print("I Exported Something")
