@@ -323,13 +323,17 @@ def Populate_Sales_Report_Entries(listOfData=list()):
 	headerWidgets = overlayElementsHeaderFrame.winfo_children() #Note this includes Frames
 	contentWidgets = overlayElementsContentFrame.winfo_children() #Note this includes Frames
 
-	counter = 0
+	c1 = 0
+	c2 = 0
 	for rowFrame in contentWidgets:
 		for entry in rowFrame.winfo_children():
-			if((entry.winfo_class() == 'Entry') and (counter < len(listOfData))):
-				entry.insert(0, listOfData[counter])
-				#entry.insert(0, str(counter))
-				counter += 1
+			if((entry.winfo_class() == 'Entry') and (c1 < len(listOfData))):
+				entry.insert(0, listOfData[c1][c2])
+				c2 += 1
+			if (c2 >= 4):
+				c1 += 1
+				c2 = 0
+		
 
 
 def Create_List_Titles(master):
@@ -753,7 +757,7 @@ def Generate_Sales_Report_Callback():
 
 	stockOverlayFrame.pack()
 
-def Draw_Sales_Report(date):
+def Draw_Sales_Report(date, period):
 	global overlayElementsHeaderFrame 
 	global overlayElementsContentFrame
 	global acceptState
@@ -796,13 +800,12 @@ def Draw_Sales_Report(date):
 	Generate_Text_Entry(overlayHeaderFrame, "Date", CENTER, 5, (5, 5), 10, date)
 	Create_Empty_Frame(overlayHeaderFrame, 80)
 	Create_List_Titles(overlayHeaderFrame)
-	Create_Entry_List(overlayContentFrame, 6)
-	tempList = list()
+	Create_Entry_List(overlayContentFrame, 10)
 
 	overlayElementsHeaderFrame = overlayHeaderFrame
 	overlayElementsContentFrame = overlayContentFrame
 
-	Populate_Sales_Report_Entries()
+	Populate_Sales_Report_Entries(GetSalesReport(date, period))
 
 	stockOverlayFrame.pack()
 
@@ -819,6 +822,7 @@ def Accept_Button_Callback():
 	if acceptState == 1:
 		for widget in contentWidgets:
 			if widget.winfo_class() == 'Entry':
+				print(widget)
 				Entries.append(widget.get())
 		# call add item function
 		print(Entries[0])
@@ -858,20 +862,15 @@ def Accept_Button_Callback():
 		Clear_Overlay()
 		Lock_Sub_Buttons()
 	elif acceptState == 5:
-		print("Generating Sales Report")
-		print(headerWidgets)
 		for widget in headerWidgets:
 			if(widget.winfo_class() == 'Entry'):
 				date = widget.get()
-		print(date)
-		#Tansel/Tom This is meant to be whatever query you wrote
-		Get_Report_Data(date, reportOptionButtonState)
+
 		Clear_Overlay()
 		Lock_Sub_Buttons()
-		Draw_Sales_Report(date)
+		Draw_Sales_Report(date, reportOptionButtonState)
 
-def Get_Report_Data(inputDate = "", period = False):
-	
+
 
 def Cancel_Button_Callback():
 	print("I Canceled Something")

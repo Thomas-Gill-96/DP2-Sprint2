@@ -150,9 +150,9 @@ def GetSalesReport(inputDate = "", period = False):
     query = ""
     if (inputDate != ""):
         if (period == False):
-            query = "SELECT item_name, SUM(item_quantity) AS total_quantity, SUM(total_cost) AS total_cost FROM sales INNER JOIN  items ON sales.item_id = items.item_id WHERE WEEK(sale_date,1) = WEEK('" + inputDate + "',1) GROUP BY sales.item_id ORDER BY total_cost DESC;"
+            query = "SELECT item_name, item_price, SUM(item_quantity) AS total_quantity, SUM(total_cost) AS total_cost FROM sales INNER JOIN  items ON sales.item_id = items.item_id WHERE WEEK(sale_date,1) = WEEK('" + inputDate + "',1) GROUP BY sales.item_id ORDER BY total_cost DESC;"
         else:
-            query = "SELECT item_name, SUM(item_quantity) AS total_quantity, SUM(total_cost) AS total_cost FROM sales INNER JOIN  items ON sales.item_id = items.item_id WHERE MONTH(sale_date) = MONTH('" + inputDate + "') GROUP BY sales.item_id ORDER BY total_cost DESC;"
+            query = "SELECT item_name, item_price, SUM(item_quantity) AS total_quantity, SUM(total_cost) AS total_cost FROM sales INNER JOIN  items ON sales.item_id = items.item_id WHERE MONTH(sale_date) = MONTH('" + inputDate + "') GROUP BY sales.item_id ORDER BY total_cost DESC;"
     else:
         print("Error, date required.")
         return -1
