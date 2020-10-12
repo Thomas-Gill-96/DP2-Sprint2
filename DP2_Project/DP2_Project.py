@@ -310,7 +310,7 @@ def Create_Entry_List(masterFrame, numberOfRows=6):
 def Display_Entry_List(masterFrame, aListOfData):
 	records = aListOfData
 	for row in records:
-		Create_Entry_Row_Prefill(masterFrame, row[1], row[2], row[6], row[7], 20, 10)
+		Create_Entry_Row_Prefill(masterFrame, row[2], row[3], row[4], row[5], 20, 10)
 
 def Create_Sales_Record_List(masterFrame, numberOfRows=6):
 	for x in range(0, numberOfRows):
@@ -648,7 +648,10 @@ def Display_Sales_Record_Callback():
 
 	#creates the rows which are then filled with entries
 	#Create_Entry_List(overlayContentFrame)
-	Display_Entry_List(overlayContentFrame, LoadInData())
+	#Display_Entry_List(overlayContentFrame, LoadInData())
+
+	#For Debugging Purposes
+	Display_Entry_List(overlayContentFrame, GetSalesRecord("2002-02-02", "2004-04-04"))
 
 	overlayElementsHeaderFrame = overlayHeaderFrame
 	overlayElementsContentFrame = overlayContentFrame
@@ -843,8 +846,8 @@ def Accept_Button_Callback():
 				for entry in rowFrame.winfo_children():
 					if((entry.winfo_class() == "Entry") and (entry.get() != "")):
 						tempList.append(entry.get())
+				print(tempList)
 				addToSales(date, tempList[0], tempList[2], tempList[3])
-			print(tempList)
 		print("Added Sales Record")
 		Clear_Overlay()
 		Lock_Sub_Buttons()

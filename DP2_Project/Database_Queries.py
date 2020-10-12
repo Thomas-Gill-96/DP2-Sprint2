@@ -35,7 +35,9 @@ def addToSales(aSalesDate, aItemName, aItemQuant, aTotalCost):
     item_quantity = aItemQuant
     total_cost = aTotalCost
 
-    mycursor.execute("SELECT item_id FROM Items WHERE item_name = '" + aItemName + "'")
+    print(aItemName)
+
+    mycursor.execute("SELECT item_id FROM Items WHERE item_name = '" + aItem_name + "'")
     records = mycursor.fetchall()
 
     if not records:
@@ -56,14 +58,16 @@ def GetSalesRecord(startDate = "", endDate = "", saleID = ""):
     query = ""
 
     if (saleID != ""):
-        query = "SELECT Sales.sale_id, Sales.sale_date, Items.item_name, Sales.item_quantity, Sales.total_cost FROM Sales INNER JOIN Items ON Sales.item_id = Items.item_id WHERE Sales.sale_id = " + saleID
+        query = "SELECT Sales.sale_id, Sales.sale_date, Items.item_name, Items.item_price, Sales.item_quantity, Sales.total_cost FROM Sales INNER JOIN Items ON Sales.item_id = Items.item_id WHERE Sales.sale_id = " + saleID
     elif (startDate != "") and (endDate == ""):
-        query = "SELECT Sales.sale_id, Sales.sale_date, Items.item_name, Sales.item_quantity, Sales.total_cost FROM Sales INNER JOIN Items ON Sales.item_id = Items.item_id WHERE Sales.sale_date >= '" + startDate + "'"
+        query = "SELECT Sales.sale_id, Sales.sale_date, Items.item_name, Items.item_price, Sales.item_quantity, Sales.total_cost FROM Sales INNER JOIN Items ON Sales.item_id = Items.item_id WHERE Sales.sale_date >= '" + startDate + "'"
     elif (startDate != "") and (endDate != ""):
-        query = "SELECT Sales.sale_id, Sales.sale_date, Items.item_name, Sales.item_quantity, Sales.total_cost FROM Sales INNER JOIN Items ON Sales.item_id = Items.item_id WHERE Sales.sale_date BETWEEN '" + startDate + "' AND '" + endDate + "'"
+        query = "SELECT Sales.sale_id, Sales.sale_date, Items.item_name, Items.item_price, Sales.item_quantity, Sales.total_cost FROM Sales INNER JOIN Items ON Sales.item_id = Items.item_id WHERE Sales.sale_date BETWEEN '" + startDate + "' AND '" + endDate + "'"
     else:
-        print("Error, invalid search parameters.")
-        return -1
+        #print("Error, invalid search parameters.")
+        #return -1
+        query = "SELECT Sales.sale_id, Sales.sale_date, Items.item_name, Items.item_price, Sales.item_quantity, Sales.total_cost FROM Sales INNER JOIN Items ON Sales.item_id = Items.item_id"
+
 
     mycursor = mydb.cursor()
     mycursor.execute(query)
@@ -150,7 +154,7 @@ mydb = mysql.connector.connect(
     host="localhost",
     user="root",
     password="",
-    database="db_name"
+    database="sreps"
 )
 print(mydb)
 mycursor = mydb.cursor()
