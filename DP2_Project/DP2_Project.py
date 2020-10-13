@@ -169,7 +169,7 @@ def Create_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, to
 		font = buttonFont,
 		)
 
-
+	#UpdatePrice()
 	#stockPriceLabel1.insert(0, itemClicked.get())
 	
 
@@ -316,7 +316,16 @@ def Create_Sales_Record_List(masterFrame, numberOfRows=6):
 	for x in range(0, numberOfRows):
 		Create_Sales_Record_Row(masterFrame, x, "", x, "", 20, 10)
 
+def EditSalesRecord():
+		
+		sale_date = "2020-10-10"
+		item_id = 3
+		item_quantity = 3
+		total_cost = 9.00
+		sale_id = 1
 
+		UpdateSalesRecord(sale_date, item_id, item_quantity, total_cost, sale_id)
+		print("Edited a sales record")
 
 def Populate_Sales_Report_Entries(listOfData=list()):
 	
@@ -858,6 +867,7 @@ def Accept_Button_Callback():
 		Lock_Sub_Buttons()
 	elif acceptState == 4:
 		print("Displaying a Sales Record")
+		EditSalesRecord()
 		Clear_Overlay()
 		Lock_Sub_Buttons()
 	elif acceptState == 5:

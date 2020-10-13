@@ -123,6 +123,13 @@ def editSales(aFieldIndex, aRecord, aValue):
     sql = ("UPDATE Sales SET " + Field + " = '" + Value + "' WHERE " + Field + " = '" + Record + "'")
     mycursor.execute (sql)
 
+def UpdateSalesRecord(sale_date, item_id, item_quantity, total_cost, sale_id):
+    query = "UPDATE sales SET sale_date = %s, item_id = %s, item_quantity = %s, total_cost = %s WHERE sale_id = %s"
+    values = (sale_date, item_id, item_quantity, total_cost, sale_id)
+    mycursor.execute(query, values)
+    mydb.commit()
+    
+
 
 def SelectItemNames():
     itemNameList = []
@@ -148,6 +155,13 @@ def LoadInData():
     mycursor.execute (sql)
     temp = mycursor.fetchall()
     return temp
+
+def SelectAllSales():
+    SalesList = []
+    mycursor.execute("SELECT * FROM Sales")
+    for x in mycursor:
+        SalesList.append(x)
+    return SalesList
 
 
 mydb = mysql.connector.connect(
