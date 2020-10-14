@@ -3,12 +3,6 @@ from tkinter import *
 from Database_Queries import *
 import tkinter.font as tkfont
 
-'''
-If you are uncommenting the above lines, you might also want to ctrl+F 'php' and uncomment the two logo lines :)
-
-'''
-
-
 #Function Declarations
 
 
@@ -109,6 +103,8 @@ def Unlock_Export_Button():
 			button['state'] = NORMAL
 			break
 
+#unlock edit button
+
 def Lock_Sub_Buttons():
 	for button in subMenuFrame.winfo_children():
 		button['state'] = DISABLED
@@ -136,9 +132,6 @@ def Change_Entry_State(desiredState = 'toggle'):
     				selected['state'] = NORMAL
     		elif(desiredState == 'lock'):
     				selected['state'] = DISABLED
-
-def Edit_Button_Unlock():
-    	Change_Entry_State('unlock')
 
 def Create_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, totalPrice, paddingX, paddingY):
 	
@@ -524,7 +517,7 @@ def Display_Checkout_Overlay():
 		stockNameLabel.pack_propagate(False)
 		stockNameLabel.pack(side = TOP, anchor = CENTER)
 
-		#entry and enter button in content frame
+		#TODO another 2 entries to indicate date range and id
 		CheckoutEntry = Entry(
 			overlayContentFrame,
 			width = 1,
@@ -555,46 +548,6 @@ def Display_Checkout_Overlay():
 def Checkout_Button_Callback():
     	print('I will be the function a checkout button does')
 
-#below is unused, delete if changes are kept
-def Edit_Sales_Record_Callback():
-	global overlayElementsHeaderFrame 
-	global overlayElementsContentFrame
-	global acceptState
-	acceptState = 3
-
-	Clear_Overlay()
-	Lock_Sub_Buttons()
-	Unlock_Accept_Button()
-	Unlock_Cancel_Button()
-
-	print("Editing a sales record....")
-	Title_Label_Creation("Edit a Sales Record")
-	stockOverlayFrame = Frame(
-		overlayFrame,
-		width = 480,
-		height = 600,
-		borderwidth = 5,
-		relief = "ridge"
-		)
-	stockOverlayFrame.pack_propagate(False)
-
-	overlayHeaderFrame = Frame(
-		stockOverlayFrame,
-		width = 480
-		)
-	overlayHeaderFrame.pack(fill = X)
-
-	overlayContentFrame = Frame(
-		stockOverlayFrame,
-		width = 480
-		)
-	overlayContentFrame.pack(fill = X)
-
-	overlayElementsHeaderFrame = overlayHeaderFrame
-	overlayElementsContentFrame = overlayContentFrame
-
-	stockOverlayFrame.pack()
-
 def Display_Sales_Record_Callback():
 	
 	global overlayElementsHeaderFrame 
@@ -619,18 +572,7 @@ def Display_Sales_Record_Callback():
 		)
 	stockOverlayFrame.pack_propagate(False)
 
-	editModeBtn  = Button(
-			master = overlayFrame,
-			text = "Click to edit",
-			width = 15,
-			height = 4,
-			font = buttonFont,
-			bg = LIGHTGRAY,
-			fg = ALMOSTBLACK,
-			state = ACTIVE,
-			command = Edit_Button_Unlock
-			)
-	editModeBtn.pack(side = RIGHT, anchor = N)
+	
 
 	overlayHeaderFrame = Frame(
 		stockOverlayFrame,
@@ -648,7 +590,7 @@ def Display_Sales_Record_Callback():
 
 	
 
-	Generate_Text_Entry(overlayHeaderFrame, "Date", CENTER, 5, (5, 5), 10)
+	#Generate_Text_Entry(overlayHeaderFrame, "Date", CENTER, 5, (5, 5), 10)
 
 
 	Create_Empty_Frame(overlayHeaderFrame, 50)
@@ -887,8 +829,13 @@ def Cancel_Button_Callback():
 	print("I Canceled Something")
 	Clear_Overlay()
 	Lock_Sub_Buttons()
-	#TEMPORARY TESTER!!! REMOVE LINE BELOW WHENEVER YOU SEE IT!!!
-	#Display_Checkout_Overlay()
+	
+
+def Edit_Button_Callback():
+	print("I pressed edit")
+	Clear_Overlay()
+	Lock_Sub_Buttons()
+	Change_Entry_State('unlock')#this is all thats needed internally to unlock all the entry fields
 
 def Export_Button_Callback():
 	print("I Exported Something")
@@ -1039,6 +986,18 @@ def Initialise_Sub_Menu_Frame():
 		command = Accept_Button_Callback
 		)
 	AcceptButton.pack(side = LEFT,anchor = E)
+	EditButton  = Button(
+		master = subMenuFrame,
+		text = "Edit",
+		width = 20,
+		height = 3,
+		font = buttonFont,
+		bg = LIGHTGRAY,
+		fg = ALMOSTBLACK,
+		state = DISABLED,
+		command = Edit_Button_Callback
+		)
+	EditButton.pack(side = LEFT,anchor = E)
 
 #Constants
 LIGHTERGRAY = "#cccccc"
