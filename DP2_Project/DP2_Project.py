@@ -309,8 +309,30 @@ def Create_Entry_List(masterFrame, numberOfRows=6):
 
 def Display_Entry_List(masterFrame, aListOfData):
 	records = aListOfData
+	totalTally = 0
+
 	for row in records:
 		Create_Entry_Row_Prefill(masterFrame, row[2], row[3], row[4], row[5], 20, 10)
+		totalTally += row[5]
+
+	headerFrame1 = Frame(
+		masterFrame,
+		width = 480,
+		height = 10,
+		borderwidth = 2,
+		relief = "ridge"
+		)
+	headerFrame1.pack(fill = X)
+
+	totalTallyLabel1 = Entry(
+		headerFrame1,
+		width = 10,
+		font = buttonFont
+		)
+
+	totalTallyLabel1.insert(0, totalTally)
+
+	totalTallyLabel1.pack(side = RIGHT)
 
 def Create_Sales_Record_List(masterFrame, numberOfRows=6):
 	for x in range(0, numberOfRows):
