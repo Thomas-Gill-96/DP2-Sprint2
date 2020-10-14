@@ -800,12 +800,19 @@ def Draw_Sales_Report(date, period):
 	Generate_Text_Entry(overlayHeaderFrame, "Date", CENTER, 5, (5, 5), 10, date)
 	Create_Empty_Frame(overlayHeaderFrame, 80)
 	Create_List_Titles(overlayHeaderFrame)
-	Create_Entry_List(overlayContentFrame, 10)
+
+	SalesReportData = GetSalesReport(date, period)
+	numberOfEntries = len(SalesReportData)
+
+	if (numberOfEntries > 10):
+		numberOfEntries = 10
+		
+	Create_Entry_List(overlayContentFrame, numberOfEntries)
 
 	overlayElementsHeaderFrame = overlayHeaderFrame
 	overlayElementsContentFrame = overlayContentFrame
 
-	Populate_Sales_Report_Entries(GetSalesReport(date, period))
+	Populate_Sales_Report_Entries(SalesReportData)
 
 	stockOverlayFrame.pack()
 
