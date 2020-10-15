@@ -154,23 +154,33 @@ def Create_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, to
 	stockNameLabel1 = OptionMenu(
 		headerFrame1,
 		itemClicked,
-		*itemList
-		)
+		*itemList,
+		command = Update_Price
+		)	
+	
+	#Update_Price(itemList[0])
+	#Update_Price(itemClicked)
+
 	stockPriceLabel1 = Entry(
 		headerFrame1,
 		width = 1,
 		font = buttonFont,
 		)
 
-	#UpdatePrice()
+
 	#stockPriceLabel1.insert(0, itemClicked.get())
 	
 
 	stockQuanityLabel1 = Entry(
 		headerFrame1,
 		width = 1,
-		font = buttonFont
+		font = buttonFont,
+		validate="all",
+		validatecommand=Update_Total_Price
 		)
+
+	#validate="focusout", validatecommand=callback
+
 	totalPriceLabel1 = Entry(
 		headerFrame1,
 		width = 1,
@@ -189,15 +199,47 @@ def Get_Item_Price(item):
 		if (item == i[0]):
 			return i[1]
 
-def UpdatePrice():
+def Update_Price(Selection):
 	contentWidgets = overlayElementsContentFrame.winfo_children()
+	rowEntries = list()
 	for rowframe in contentWidgets:
-		for widget in rowframe:
-			if widget.winfo_class() == 'Entry':
-				Entries.append(widget.get())
+		rowEntries.clear()
+		for widget in rowframe.winfo_children():
+			rowEntries.append(widget)
+		
+		print(rowEntries[0], Selection[0])
+		rowEntries[1].delete(0, END)
+		rowEntries[1].insert(0, Get_Item_Price(Selection[0]))
 
-	strippeditem = itemClicked.get().strip("(),'")
-	stockPriceLabel1.insert(0, Get_Item_Price(strippeditem))
+
+#print("Created a row of entries")
+
+def Update_Total_Price():
+	print("Updating Total Price!")
+	contentWidgets = overlayElementsContentFrame.winfo_children()
+	rowEntries = list()
+	rowCounter = 0
+
+
+
+	for rowframe in contentWidgets:
+		rowCounter += 1 
+		rowEntries.clear()
+		for widget in rowframe.winfo_children():
+			rowEntries.append(widget)
+
+		print(rowEntries[2].get())
+		if rowEntries[2].get() == "":
+			break
+
+		if float(rowEntries[2].get().strip()) != 0:
+			quanity = float(rowEntries[2].get().strip())
+			print(quanity)
+			pricePerQuanity = float(rowEntries[1].get())
+			print(pricePerQuanity)
+			rowEntries[3].delete(0, END)
+			rowEntries[3].insert(0, quanity*pricePerQuanity)
+			print("Current Row = " + str(rowCounter))
 
 
 #print("Created a row of entries")
@@ -1046,6 +1088,8 @@ reportOptionButtonState = bool
 #Overlay Elements Master Frame Reference
 overlayElementsHeaderFrame = Frame()
 overlayElementsContentFrame = Frame()
+itemClicked = StringVar()
+#itemClicked.trace('w', Update_Price)
 
 #Title Frame Creation
 titleFrame = Frame(
