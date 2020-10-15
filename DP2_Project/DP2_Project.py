@@ -317,6 +317,12 @@ def Display_Entry_List(masterFrame, aListOfData):
 		)
 	headerFrame1.pack(fill = X)
 
+	tempTitleLabel = Label(
+		headerFrame1,
+		text = "Total Sum: ",
+		font = subHeadingFont
+		)
+
 	totalTallyLabel1 = Entry(
 		headerFrame1,
 		width = 10,
@@ -326,6 +332,7 @@ def Display_Entry_List(masterFrame, aListOfData):
 	totalTallyLabel1.insert(0, totalTally)
 
 	totalTallyLabel1.pack(side = RIGHT)
+	tempTitleLabel.pack(side = RIGHT)
 
 def Create_Sales_Record_List(masterFrame, numberOfRows=6):
 	for x in range(0, numberOfRows):
