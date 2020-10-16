@@ -3,6 +3,7 @@ from tkinter import *
 from Database_Queries import *
 import tkinter.font as tkfont
 
+aItemName = ""
 #Function Declarations
 
 
@@ -157,7 +158,6 @@ def Create_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, to
 		*itemList,
 		command = Update_Price
 		)	
-	
 	#Update_Price(itemList[0])
 	#Update_Price(itemClicked)
 
@@ -200,6 +200,7 @@ def Get_Item_Price(item):
 			return i[1]
 
 def Update_Price(Selection):
+	global aItemName
 	contentWidgets = overlayElementsContentFrame.winfo_children()
 	rowEntries = list()
 	for rowframe in contentWidgets:
@@ -210,6 +211,7 @@ def Update_Price(Selection):
 		print(rowEntries[0], Selection[0])
 		rowEntries[1].delete(0, END)
 		rowEntries[1].insert(0, Get_Item_Price(Selection[0]))
+	aItemName = Selection[0]
 
 
 #print("Created a row of entries")
@@ -833,6 +835,7 @@ def Draw_Sales_Report(date):
 
 def Accept_Button_Callback():
 	global acceptState
+	global aitemName
 	#widgets = overlayElementsMasterFrame.winfo_children()
 	
 	headerWidgets = overlayElementsHeaderFrame.winfo_children() #Note this includes Frames
@@ -869,7 +872,7 @@ def Accept_Button_Callback():
 					if((entry.winfo_class() == "Entry") and (entry.get() != "")):
 						tempList.append(entry.get())
 				print(tempList)
-				addToSales(date, tempList[0], tempList[2], tempList[3])
+				addToSales(date, aItemName, tempList[1], tempList[2])
 		print("Added Sales Record")
 		Clear_Overlay()
 		Lock_Sub_Buttons()
