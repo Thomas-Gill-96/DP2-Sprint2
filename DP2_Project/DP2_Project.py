@@ -119,8 +119,9 @@ def Lock_Sub_Buttons():
 # default toggles the state between DISABLED and NORMAL
 # call with lock, unlock to choose 'state' to set
 def Change_Entry_State(desiredState = 'toggle'):
+	global overlayElementsContentFrame
 	widgets = overlayElementsContentFrame.winfo_children()
-	print(widgets)
+	#print(widgets)
 	entries = []
 	for rowFrame in widgets:
     		if(rowFrame.winfo_class() == "Frame"):
@@ -128,7 +129,7 @@ def Change_Entry_State(desiredState = 'toggle'):
     						if(entry.winfo_class() == "Entry"):
     							entries.append(entry)
 	
-	print(entries)
+	#print(entries)
 	for selected in entries:
     		if(desiredState == 'toggle'):
     				if(selected['state'] == NORMAL):
@@ -595,30 +596,30 @@ def Display_Checkout_Overlay():
 	stockNameLabel.pack_propagate(False)
 	stockNameLabel.pack(side = TOP, anchor = CENTER)
 
-	#TODO another 2 entries to indicate date range and id
-	CheckoutEntry = Entry(
+	
+	IDEntry = Entry(
 		overlayContentFrame,
 		width = 1,
 		font = buttonFont
 		)
 
-	CheckoutEntry.pack(side = TOP, fill = X, anchor = CENTER, expand = 2.5)
+	IDEntry.pack(side = TOP, fill = X, anchor = CENTER, expand = 2.5)
 
-	CheckoutEntry = Entry(
+	StartDateEntry = Entry(
 		overlayContentFrame,
 		width = 1,
 		font = buttonFont
 		)
 
-	CheckoutEntry.pack(side = TOP, fill = X, anchor = CENTER, expand = 2.5)
+	StartDateEntry.pack(side = TOP, fill = X, anchor = CENTER, expand = 2.5)
 
-	CheckoutEntry = Entry(
+	EndDateEntry = Entry(
 		overlayContentFrame,
 		width = 1,
 		font = buttonFont
 		)
 
-	CheckoutEntry.pack(side = TOP, fill = X, anchor = CENTER, expand = 2.5)
+	EndDateEntry.pack(side = TOP, fill = X, anchor = CENTER, expand = 2.5)
 
 	'''
 	CheckoutButton  = Button(
@@ -640,8 +641,15 @@ def Display_Checkout_Overlay():
 
 	CheckoutOverlayFrame.pack()
 
-def Display_Sales_Record_Callback():
+def Display_Sales_Record_Callback(DisplayVals):
 	
+	if(DisplayVals[1] == ''):
+		DisplayVals[1] ='0000-00-00'
+		
+	if(DisplayVals[2] == ''):
+		DisplayVals[2] ='2020-16-10'
+
+
 	global overlayElementsHeaderFrame 
 	global overlayElementsContentFrame
 	global acceptState
@@ -693,12 +701,23 @@ def Display_Sales_Record_Callback():
 	#creates the rows which are then filled with entries
 	#Create_Entry_List(overlayContentFrame)
 	#Display_Entry_List(overlayContentFrame, LoadInData())
-
-	#For Debugging Purposes
-	Display_Entry_List(overlayContentFrame, GetSalesRecord("2002-02-02", "2004-04-04"))
-
 	overlayElementsHeaderFrame = overlayHeaderFrame
 	overlayElementsContentFrame = overlayContentFrame
+	#For Debugging Purposes
+
+	'''
+	DisplayVals has a list of three items (ID,StartDate,EndDate)
+
+	This makes it work for just id, or dates
+	there are also default values of '0000-00-00' and '2020-12-12' if the fields were supplied empty
+	'''
+	if(DisplayVals[0]==''):
+		Display_Entry_List(overlayContentFrame, GetSalesRecord(DisplayVals[1], DisplayVals[2]))
+	else:
+		Display_Entry_List(overlayContentFrame, GetSalesRecord(DisplayVals[0]))
+
+	#overlayElementsHeaderFrame = overlayHeaderFrame
+	#overlayElementsContentFrame = overlayContentFrame
 
 	#this function can be called without params to toggle state, or with the text 'lock' or 'unlock'
 	#you will need to call 'unlock' before using a function like 'input' for example
@@ -912,9 +931,18 @@ def Accept_Button_Callback():
 
 	elif acceptState == 3:
 		print("Accept pressed from checkout screen")
+		#possible loop to grap entry data
+		LookupVals = list()
+		for widget in contentWidgets:
+			if(widget.winfo_class() == "Entry"):
+				LookupVals.append(widget.get())
+		
+		print(LookupVals)
+
 		Clear_Overlay()
 		Lock_Sub_Buttons()
-		Display_Sales_Record_Callback()
+		Display_Sales_Record_Callback(LookupVals)
+		
 	elif acceptState == 4:
 		print("Displaying a Sales Record")
 		EditSalesRecord()
@@ -1114,6 +1142,7 @@ reportOptionButtonState = bool
 overlayElementsHeaderFrame = Frame()
 overlayElementsContentFrame = Frame()
 itemClicked = StringVar()
+
 #itemClicked.trace('w', Update_Price)
 
 #Global variable for record data to be exported
