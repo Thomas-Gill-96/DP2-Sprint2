@@ -2,6 +2,7 @@ from tkinter import *
 #from InsertItem import *
 from Database_Queries import *
 import tkinter.font as tkfont
+from ExportCSV import *
 
 '''
 If you are uncommenting the above lines, you might also want to ctrl+F 'php' and uncomment the two logo lines :)
@@ -761,6 +762,9 @@ def Draw_Sales_Report(date, period):
 	global overlayElementsHeaderFrame 
 	global overlayElementsContentFrame
 	global acceptState
+	global exportList
+	global exportDate
+	global exportPeriod
 
 	acceptState = 6
 	Lock_Sub_Buttons()
@@ -803,6 +807,9 @@ def Draw_Sales_Report(date, period):
 
 	SalesReportData = GetSalesReport(date, period)
 	numberOfEntries = len(SalesReportData)
+	exportList = SalesReportData
+	exportDate = date
+	exportPeriod = period
 
 	if (numberOfEntries > 10):
 		numberOfEntries = 10
@@ -890,6 +897,10 @@ def Export_Button_Callback():
 	print("I Exported Something")
 	Clear_Overlay()
 	Lock_Sub_Buttons()
+
+	exportCSV(exportList, exportDate, exportPeriod)
+
+
 
 def Weekly_Button_Callback():
 	global reportOptionButtonState
@@ -1054,6 +1065,11 @@ reportOptionButtonState = bool
 #Overlay Elements Master Frame Reference
 overlayElementsHeaderFrame = Frame()
 overlayElementsContentFrame = Frame()
+
+#Global variable for record data to be exported
+exportList = list()
+exportDate = 0
+exportPeriod = 0
 
 #Title Frame Creation
 titleFrame = Frame(
