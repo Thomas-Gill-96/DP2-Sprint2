@@ -104,7 +104,11 @@ def Unlock_Export_Button():
 			button['state'] = NORMAL
 			break
 
-#unlock edit button
+def Unlock_Edit_Button():
+	for button in subMenuFrame.winfo_children():
+		if(button['text'] == "Edit"):
+			button['state'] = NORMAL
+			break
 
 def Lock_Sub_Buttons():
 	for button in subMenuFrame.winfo_children():
@@ -115,7 +119,7 @@ def Lock_Sub_Buttons():
 # call with lock, unlock to choose 'state' to set
 def Change_Entry_State(desiredState = 'toggle'):
 	widgets = overlayElementsContentFrame.winfo_children()
-	#print(widgets)
+	print(widgets)
 	entries = []
 	for rowFrame in widgets:
     		if(rowFrame.winfo_class() == "Frame"):
@@ -123,6 +127,7 @@ def Change_Entry_State(desiredState = 'toggle'):
     						if(entry.winfo_class() == "Entry"):
     							entries.append(entry)
 	
+	print(entries)
 	for selected in entries:
     		if(desiredState == 'toggle'):
     				if(selected['state'] == NORMAL):
@@ -213,9 +218,6 @@ def Update_Price(Selection):
 		rowEntries[1].insert(0, Get_Item_Price(Selection[0]))
 	aItemName = Selection[0]
 
-
-#print("Created a row of entries")
-
 def Update_Total_Price():
 	print("Updating Total Price!")
 	contentWidgets = overlayElementsContentFrame.winfo_children()
@@ -242,13 +244,6 @@ def Update_Total_Price():
 			rowEntries[3].delete(0, END)
 			rowEntries[3].insert(0, quanity*pricePerQuanity)
 			print("Current Row = " + str(rowCounter))
-
-
-#print("Created a row of entries")
-
-
-#this version is only called by display sales record so far
-#def Create_Locked_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, totalPrice, paddingX, paddingY):
 
 def Create_Entry_Row(masterFrame, stockName, stockPrice, stockQuanity, totalPrice, paddingX, paddingY):
 	
@@ -543,83 +538,102 @@ def Add_Sales_Record_Callback():
 	stockOverlayFrame.pack()
 
 def Display_Checkout_Overlay():
-    	
-		global overlayElementsHeaderFrame
-		global overlayElementsContentFrame
-		Clear_Overlay()
-
-		CheckoutOverlayFrame = Frame(
-			overlayFrame,
-			width = 480,
-			height = 600,
-			borderwidth = 5,
-			relief = "ridge"
-			)
-
-		overlayHeaderFrame = Frame(
-			CheckoutOverlayFrame,
-			width = 480
-			)
-		overlayHeaderFrame.pack(fill = X)
-
-		overlayContentFrame = Frame(
-			CheckoutOverlayFrame,
-			width = 480
-			)
-		overlayContentFrame.pack(fill = X)
-
-		'''
-		TODO: find a way to set the frame to generate in the middle, or at least nicely
-			  and try find out why the label didnt stick to the header content and instead got stuck in the frame???
-
-		Isaac(Hope this helps): 
-			  For what you want to achieve you will need to look into pack_propergate, side and anchor which all affects how things are
-			  drawn into the window.
-			  
-			  As for the label, you have applyed the border to the CheckoutOverlayFrame which contains the header frame, hence the label
-			  is in the correct spot but the border is being applied to the wrong frame (for what you want)
-		'''
-
-		#label in header content frame
-		stockNameLabel = Label(
-			overlayHeaderFrame,
-			text = "Select a record to display",
-			width = 20,
-			font = textHeaderFont
-			)
-		stockNameLabel.pack_propagate(False)
-		stockNameLabel.pack(side = TOP, anchor = CENTER)
-
-		#TODO another 2 entries to indicate date range and id
-		CheckoutEntry = Entry(
-			overlayContentFrame,
-			width = 1,
-			font = buttonFont
-			)
+	global acceptState
+	acceptState = 3
 	
-		CheckoutEntry.pack(side = TOP, fill = X, anchor = CENTER, expand = 2.5)
 
-		CheckoutButton  = Button(
-			master = overlayContentFrame,
-			text = "Checkout",
-			width = 10,
-			height = 2,
-			font = buttonFont,
-			bg = LIGHTGRAY,
-			fg = ALMOSTBLACK,
-			state = ACTIVE,
-			command = Checkout_Button_Callback
-			)
-		CheckoutButton.pack(side = BOTTOM, anchor = S)
+	global overlayElementsHeaderFrame
+	global overlayElementsContentFrame
+	Clear_Overlay()
+	Unlock_Accept_Button()
+	Unlock_Cancel_Button()
 
+	CheckoutOverlayFrame = Frame(
+		overlayFrame,
+		width = 480,
+		height = 600,
+		borderwidth = 5,
+		relief = "ridge"
+		)
 
-		overlayElementsHeaderFrame = overlayHeaderFrame
-		overlayElementsContentFrame = overlayContentFrame
+	overlayHeaderFrame = Frame(
+		CheckoutOverlayFrame,
+		width = 480
+		)
+	overlayHeaderFrame.pack(fill = X)
 
-		CheckoutOverlayFrame.pack()
+	overlayContentFrame = Frame(
+		CheckoutOverlayFrame,
+		width = 480
+		)
+	overlayContentFrame.pack(fill = X)
 
-def Checkout_Button_Callback():
-    	print('I will be the function a checkout button does')
+	'''
+	TODO: find a way to set the frame to generate in the middle, or at least nicely
+			and try find out why the label didnt stick to the header content and instead got stuck in the frame???
+
+	Isaac(Hope this helps): 
+			For what you want to achieve you will need to look into pack_propergate, side and anchor which all affects how things are
+			drawn into the window.
+			
+			As for the label, you have applyed the border to the CheckoutOverlayFrame which contains the header frame, hence the label
+			is in the correct spot but the border is being applied to the wrong frame (for what you want)
+	'''
+
+	#label in header content frame
+	stockNameLabel = Label(
+		overlayHeaderFrame,
+		text = "Select a record to display",
+		width = 20,
+		font = textHeaderFont
+		)
+	stockNameLabel.pack_propagate(False)
+	stockNameLabel.pack(side = TOP, anchor = CENTER)
+
+	#TODO another 2 entries to indicate date range and id
+	CheckoutEntry = Entry(
+		overlayContentFrame,
+		width = 1,
+		font = buttonFont
+		)
+
+	CheckoutEntry.pack(side = TOP, fill = X, anchor = CENTER, expand = 2.5)
+
+	CheckoutEntry = Entry(
+		overlayContentFrame,
+		width = 1,
+		font = buttonFont
+		)
+
+	CheckoutEntry.pack(side = TOP, fill = X, anchor = CENTER, expand = 2.5)
+
+	CheckoutEntry = Entry(
+		overlayContentFrame,
+		width = 1,
+		font = buttonFont
+		)
+
+	CheckoutEntry.pack(side = TOP, fill = X, anchor = CENTER, expand = 2.5)
+
+	'''
+	CheckoutButton  = Button(
+		master = overlayContentFrame,
+		text = "Checkout",
+		width = 10,
+		height = 2,
+		font = buttonFont,
+		bg = LIGHTGRAY,
+		fg = ALMOSTBLACK,
+		state = ACTIVE,
+		#command = Checkout_Button_Callback
+		)
+	CheckoutButton.pack(side = RIGHT, anchor = E)
+	'''
+
+	overlayElementsHeaderFrame = overlayHeaderFrame
+	overlayElementsContentFrame = overlayContentFrame
+
+	CheckoutOverlayFrame.pack()
 
 def Display_Sales_Record_Callback():
 	
@@ -633,6 +647,7 @@ def Display_Sales_Record_Callback():
 	Unlock_Accept_Button()
 	Unlock_Cancel_Button()
 	Unlock_Export_Button()
+	Unlock_Edit_Button()
 
 	#print("Displaying a sales record....")
 	Title_Label_Creation("Sales Record")
@@ -878,14 +893,16 @@ def Accept_Button_Callback():
 		Lock_Sub_Buttons()
 
 	elif acceptState == 3:
-		print("Editing a Sales Record")
+		print("Accept pressed from checkout screen")
 		Clear_Overlay()
 		Lock_Sub_Buttons()
+		Display_Sales_Record_Callback()
 	elif acceptState == 4:
 		print("Displaying a Sales Record")
 		EditSalesRecord()
 		Clear_Overlay()
 		Lock_Sub_Buttons()
+		
 	elif acceptState == 5:
 		print("Generating Sales Report")
 		print(headerWidgets)
@@ -977,21 +994,6 @@ def Initialise_Side_Menu_Frame():
 		)
 	addSalesRecordButton.pack(padx = 15, pady = 10)
 
-	#Edit Sales Record Button
-	"""
-	editSalesRecordButton = Button(
-		master=mainMenuButtonsFrame,
-		text = "Edit a Sales Record",
-		width = 20,
-		height = 3,
-		font = buttonFont,
-		bg = LIGHTGRAY,
-		fg = ALMOSTBLACK,
-		command = Edit_Sales_Record_Callback
-		)
-	editSalesRecordButton.pack(padx = 15, pady = 10)
-	"""
-
 	#Display Sales Record Button
 	displaySalesRecordButton = Button(
 		master=mainMenuButtonsFrame,
@@ -1001,7 +1003,7 @@ def Initialise_Side_Menu_Frame():
 		font = buttonFont,
 		bg = LIGHTGRAY,
 		fg = ALMOSTBLACK,
-		command = Display_Sales_Record_Callback
+		command = Display_Checkout_Overlay#Display_Sales_Record_Callback
 		)
 	displaySalesRecordButton.pack(padx = 15, pady = 10)
 
