@@ -121,7 +121,7 @@ def Lock_Sub_Buttons():
 def Change_Entry_State(desiredState = 'toggle'):
 	global overlayElementsContentFrame
 	widgets = overlayElementsContentFrame.winfo_children()
-	#print(widgets)
+	print(widgets)
 	entries = []
 	for rowFrame in widgets:
     		if(rowFrame.winfo_class() == "Frame"):
@@ -970,7 +970,6 @@ def Cancel_Button_Callback():
 
 def Edit_Button_Callback():
 	print("I pressed edit")
-	Clear_Overlay()
 	Lock_Sub_Buttons()
 	Change_Entry_State('unlock')#this is all thats needed internally to unlock all the entry fields
 
