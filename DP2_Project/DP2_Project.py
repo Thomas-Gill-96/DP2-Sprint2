@@ -574,18 +574,6 @@ def Display_Checkout_Overlay():
 		)
 	overlayContentFrame.pack(fill = X)
 
-	'''
-	TODO: find a way to set the frame to generate in the middle, or at least nicely
-			and try find out why the label didnt stick to the header content and instead got stuck in the frame???
-
-	Isaac(Hope this helps): 
-			For what you want to achieve you will need to look into pack_propergate, side and anchor which all affects how things are
-			drawn into the window.
-			
-			As for the label, you have applyed the border to the CheckoutOverlayFrame which contains the header frame, hence the label
-			is in the correct spot but the border is being applied to the wrong frame (for what you want)
-	'''
-
 	#label in header content frame
 	stockNameLabel = Label(
 		overlayHeaderFrame,
@@ -594,16 +582,34 @@ def Display_Checkout_Overlay():
 		font = textHeaderFont
 		)
 	stockNameLabel.pack_propagate(False)
-	stockNameLabel.pack(side = TOP, anchor = CENTER)
+	stockNameLabel.pack(side = BOTTOM, anchor = N)
 
+	IDLabel = Label(
+		overlayContentFrame,
+		text = "ID",
+		width = 1,
+		font = textHeaderFont
+		)
 	
+	dateStartLabel = Label(
+		overlayContentFrame,
+		text = "Start",
+		width = 3,
+		font = textHeaderFont
+		)
+	
+	dateEndLabel = Label(
+		overlayContentFrame,
+		text = "End",
+		width = 3,
+		font = textHeaderFont
+		)
+
 	IDEntry = Entry(
 		overlayContentFrame,
 		width = 1,
 		font = buttonFont
 		)
-
-	IDEntry.pack(side = TOP, fill = X, anchor = CENTER, expand = 2.5)
 
 	StartDateEntry = Entry(
 		overlayContentFrame,
@@ -611,30 +617,21 @@ def Display_Checkout_Overlay():
 		font = buttonFont
 		)
 
-	StartDateEntry.pack(side = TOP, fill = X, anchor = CENTER, expand = 2.5)
-
 	EndDateEntry = Entry(
 		overlayContentFrame,
 		width = 1,
 		font = buttonFont
 		)
 
-	EndDateEntry.pack(side = TOP, fill = X, anchor = CENTER, expand = 2.5)
 
-	'''
-	CheckoutButton  = Button(
-		master = overlayContentFrame,
-		text = "Checkout",
-		width = 10,
-		height = 2,
-		font = buttonFont,
-		bg = LIGHTGRAY,
-		fg = ALMOSTBLACK,
-		state = ACTIVE,
-		#command = Checkout_Button_Callback
-		)
-	CheckoutButton.pack(side = RIGHT, anchor = E)
-	'''
+	#spent too long making them side by side, just decided this works
+	IDLabel.pack(side = TOP, anchor = W)
+	IDEntry.pack(side = TOP, fill = X, anchor = E, expand = 2.5)
+	dateStartLabel.pack(side = TOP, anchor = W)
+	StartDateEntry.pack(side = TOP, fill = X, anchor = E, expand = 2.5)
+	dateEndLabel.pack(side = TOP, anchor = W)
+	EndDateEntry.pack(side = TOP, fill = X, anchor = E, expand = 2.5)
+
 
 	overlayElementsHeaderFrame = overlayHeaderFrame
 	overlayElementsContentFrame = overlayContentFrame
