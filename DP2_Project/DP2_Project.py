@@ -182,10 +182,10 @@ def Create_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, to
 		headerFrame1,
 		width = 1,
 		font = buttonFont,
-		validate="all",
-		validatecommand=Update_Total_Price
+		validate="key",
+		validatecommand= Update_Total_Price
 		)
-
+	#stockQuanityLabel1.config(validate = "key",validatecommand = )
 	#validate="focusout", validatecommand=callback
 
 	totalPriceLabel1 = Entry(
@@ -194,6 +194,8 @@ def Create_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, to
 		font = buttonFont
 		)
 	
+	#overlayFrame.bind('<Return>', Update_Total_Price)
+
 	stockNameLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 2.5)
 	stockPriceLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.0)
 	stockQuanityLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.0)
@@ -219,6 +221,7 @@ def Update_Price(Selection):
 		rowEntries[1].delete(0, END)
 		rowEntries[1].insert(0, Get_Item_Price(Selection[0]))
 	aItemName = Selection[0]
+	return True
 
 def Update_Total_Price():
 	print("Updating Total Price!")
@@ -236,7 +239,7 @@ def Update_Total_Price():
 
 		print(rowEntries[2].get())
 		if rowEntries[2].get() == "":
-			break
+			return True
 
 		if float(rowEntries[2].get().strip()) != 0:
 			quanity = float(rowEntries[2].get().strip())
@@ -246,6 +249,7 @@ def Update_Total_Price():
 			rowEntries[3].delete(0, END)
 			rowEntries[3].insert(0, quanity*pricePerQuanity)
 			print("Current Row = " + str(rowCounter))
+	return True
 
 def Create_Entry_Row(masterFrame, stockName, stockPrice, stockQuanity, totalPrice, paddingX, paddingY):
 	
@@ -539,7 +543,7 @@ def Add_Sales_Record_Callback():
 	overlayElementsContentFrame = overlayContentFrame
 
 	#Call to the function that selects and genegates the text entry boxes
-	Create_Sales_Record_List(overlayContentFrame)
+	Create_Sales_Record_List(overlayContentFrame, 1)
 
 	stockOverlayFrame.pack()
 
@@ -907,7 +911,7 @@ def Accept_Button_Callback():
 
 	elif acceptState == 2:
 		tempList = list()
-
+		Update_Total_Price()
 		for widget in headerWidgets:
 			if(widget.winfo_class() == 'Entry'):
 				date = widget.get()
@@ -925,6 +929,7 @@ def Accept_Button_Callback():
 		print("Added Sales Record")
 		Clear_Overlay()
 		Lock_Sub_Buttons()
+		Add_Sales_Record_Callback()
 
 	elif acceptState == 3:
 		print("Accept pressed from checkout screen")
